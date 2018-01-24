@@ -5,8 +5,10 @@ import { HttpModule } from '@angular/http';
 
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
+import { PKerjaPage } from '../pages/p-kerja/p-kerja';
 import { ListPage } from '../pages/list/list';
 import { InspekPage } from '../pages/inspek/inspek';
+import { Inspek2Page } from '../pages/inspek2/inspek2';
 import { SyncronPage } from '../pages/syncron/syncron';
 
 import { SQLite , SQLiteObject} from '@ionic-native/sqlite';
@@ -18,8 +20,10 @@ import { SplashScreen } from '@ionic-native/splash-screen';
   declarations: [
     MyApp,
     HomePage,
+    PKerjaPage,
     ListPage,
     InspekPage,
+    Inspek2Page,
     SyncronPage
   ],
   imports: [
@@ -31,8 +35,10 @@ import { SplashScreen } from '@ionic-native/splash-screen';
   entryComponents: [
     MyApp,
     HomePage,
+    PKerjaPage,
     ListPage,
     InspekPage,
+    Inspek2Page,
     SyncronPage
   ],
   providers: [

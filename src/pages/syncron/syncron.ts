@@ -135,11 +135,11 @@ export class SyncronPage {
                                     this.updateIsSync('true');
                                     var rs = JSON.parse(this.data.response);
 
-                                    if(rs.success == true){
-                                        this.showAlert('Notice' , 'Sync Success');
-                                    }else{
-                                        this.showAlert('Error' , 'Sync Failed!!!!');
-                                    }
+                                    // if(rs.success == true){
+                                    //     this.showAlert('Notice' , 'Sync Success');
+                                    // }else{
+                                    //     this.showAlert('Error' , 'Sync Failed!!!!');
+                                    // }
                                     console.log(this.data.response);
                                 }, error => {
                                     this.updateIsSync('');

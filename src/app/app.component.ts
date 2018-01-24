@@ -9,8 +9,10 @@ import { SQLite, SQLiteObject } from '@ionic-native/sqlite';
 
 
 import { HomePage } from '../pages/home/home';
+import { PKerjaPage } from '../pages/p-kerja/p-kerja';
 import { ListPage } from '../pages/list/list';
 import { InspekPage } from '../pages/inspek/inspek';
+import { Inspek2Page } from '../pages/inspek2/inspek2';
 import { SyncronPage } from '../pages/syncron/syncron';
 
 
@@ -30,8 +32,10 @@ export class MyApp {
     // used for an example of ngFor and navigation
     this.pages = [
       { title: 'Home', component: HomePage },
+      { title: 'Perintah Inspek', component: PKerjaPage },
       { title: 'List Inspect', component: ListPage },
       { title: 'Entry Inspect', component: InspekPage },
+      { title: 'Entry Inspect V2', component: Inspek2Page },
       { title: 'Syncron Inspect', component: SyncronPage }
     ];
 
@@ -99,6 +103,25 @@ export class MyApp {
         
         db.executeSql(sql3, {})
         .then(res => console.log('@Executed Init SQL t_detail_pemeriksaan table'))
+        .catch(e => console.log(JSON.stringify(e)));
+
+         var sql4 = `CREATE TABLE t_perintah_inspek(
+          trid varchar(30) PRIMARY KEY,
+          po varchar(20) DEFAULT NULL,
+          idmat varchar(20) DEFAULT NULL,
+          deskripsi varchar(150) DEFAULT NULL,
+          qty_ord int(5) DEFAULT NULL,
+          vendor varchar(150) DEFAULT NULL,
+          download varchar(1) DEFAULT 'N',
+          qty_inspek int(5) DEFAULT NULL,
+          tgl_entry timestamp NULL,
+          po_item varchar(10) DEFAULT NULL,
+          no_perintah varchar(20) DEFAULT NULL)`;
+            
+ 
+        
+        db.executeSql(sql4, {})
+        .then(res => console.log('@Executed Init SQL perintah_inspeksi table'))
         .catch(e => console.log(JSON.stringify(e)));
 
         
