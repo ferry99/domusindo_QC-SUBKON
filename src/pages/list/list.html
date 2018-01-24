@@ -1,0 +1,43 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>List</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+
+    <form (ngSubmit)="searchData()">
+      <ion-grid>
+        <ion-row>
+          <ion-col col-4>
+            <ion-item>
+                <ion-datetime class="lg-label-text-input" displayFormat="DD/MM/YYYY" name="date" placeholder="Tanggal Inspek" [(ngModel)]="tanggal_inspeksi" required="" block></ion-datetime>
+            </ion-item>        
+          </ion-col>  
+          <ion-col col-5>
+              <button ion-button large tappable type="submit" block>Search Data</button>
+          </ion-col>    
+        </ion-row>
+     </ion-grid>
+    </form>
+
+<!--   <ion-searchbar (ionInput)="getItems($event)" placeholder="Day/Month/Year"></ion-searchbar>
+ -->  
+  <ion-list>
+    <button ion-item *ngFor="let item of items" (click)="itemTapped($event, item)">
+      <ion-icon [name]="item.icon" item-start></ion-icon>
+      <span class="md-label-text">{{item.nama_subkon}}</span>
+      <p><span class="md-label-text">{{item.nama_inspektor}} | {{item.lokasi_subkon}} | {{item.tanggal_inspeksi}}</span></p>
+      <div class="item-note" item-end>
+        <p style="color:green">{{item.is_sync}}</p>
+      </div>
+    </button>
+  </ion-list>
+  <div *ngIf="selectedItem" padding>
+    <!-- You navigated here from <b>{{selectedItem.title}}</b> -->
+  </div>
+<!--   {{items | json}}
+ --></ion-content>
