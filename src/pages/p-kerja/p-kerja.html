@@ -11,13 +11,13 @@
 <ion-content > 	
 	{{perintah_inspek}}
 	<ion-list>
-	  <button ion-item *ngFor="let id of id_perintah_inspek" (click)="openModal({charNum: 0})">
-	    <span class="md-label-text">{{id}}</span>
-	    <p><span class="md-label-text"></span></p>
-	    <div class="item-note" item-end>
-	      <p style="color:green">Active</p>
-	    </div>
-	  </button>
+		<button ion-item *ngFor="let row of id_perintah_inspek_local" (click)="openModal({charNum: row.no_perintah})">
+			<span class="md-label-text">{{row.no_perintah}}</span>
+			<p><span class="md-label-text"></span></p>
+			<div class="item-note" item-end>
+			  	<p style="color:green">{{row.download === "N" ? "Active" : "Inactive(Synced)"}}</p>
+			</div>
+		</button>
 	</ion-list>
 
 	<ion-grid>

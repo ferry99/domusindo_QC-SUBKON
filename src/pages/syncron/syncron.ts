@@ -7,7 +7,7 @@ import { SQLite, SQLiteObject } from '@ionic-native/sqlite';
 import { SQLitePorter } from '@ionic-native/sqlite-porter';
 import { AlertController } from 'ionic-angular';
 import { LoadingController } from 'ionic-angular';
-
+import _ from 'underscore';
 
 
 /**
@@ -72,7 +72,8 @@ export class SyncronPage {
                 this.arrItemFormHeader = [];
                 if(res.rows.length > 0) { 
                     for (let i = 0; i < res.rows.length; i++) {   
-                        let data1 = {id_inspeksi : "",
+                        let data1 = {    id_perintah_inspek :"",
+                                        id_inspeksi : "",
                                         tanggal_inspeksi : "",
                                         nama_inspektor : "",
                                         nama_subkon : "",
@@ -105,6 +106,7 @@ export class SyncronPage {
                                     //console.log(JSON.stringify(this.arrDetailItem));
                                 }                               
                             }
+                            data1.id_perintah_inspek  = res.rows.item(i).id_perintah_inspek;
                             data1.id_inspeksi         = res.rows.item(i).id_inspeksi;
                             data1.tanggal_inspeksi    = res.rows.item(i).tanggal_inspeksi;
                             data1.nama_inspektor      = res.rows.item(i).nama_inspektor;
@@ -118,31 +120,34 @@ export class SyncronPage {
                             data1.qty_defect          = res.rows.item(i).qty_defect; 
                             data1.cat_ketidaksesuaian = res.rows.item(i).cat_ketidaksesuaian; 
                             data1.date_created        = res.rows.item(i).date_created; 
-                            this.arrItemFormHeader.push(data1);
-                           
+                            this.arrItemFormHeader.push(data1);                     
                             //STEP 3 -------- POSTING DATA TO DOMUSCOM
                             //console.log('Count'+  i + '=' +res.rows.length);
                             if(i == res.rows.length-1){
+                                let arr_id_perintah_inspek = _.uniq(_.pluck(_.flatten(this.arrItemFormHeader), "id_perintah_inspek"))
                                 var data = {
                                     m_inspek : this.arrItemFormHeader,
                                     detail : this.arrDetailItem                   
                                 }
+
                                 var postData = JSON.stringify(data); 
                                 //console.log(postData);
+                                //POST data to domuscom
                                 this.http.post('http://192.168.0.8/domuscom/f_lib_domuscom/dept/qa/qc_checking_subkon/controller/c.sync_subkon.php',postData)
                                 .subscribe(data => {
-                                    this.data.response = data["_body"]; 
-                                    this.updateIsSync('true');
+                                    this.data.response = data["_body"];
                                     var rs = JSON.parse(this.data.response);
-
-                                    // if(rs.success == true){
-                                    //     this.showAlert('Notice' , 'Sync Success');
-                                    // }else{
-                                    //     this.showAlert('Error' , 'Sync Failed!!!!');
-                                    // }
-                                    console.log(this.data.response);
+                                    if(rs.success == true){
+                                        // this.loading.dismiss();
+                                        this.showAlert('Notice' , 'Sync Success');
+                                        this.updateIsSync('true' , arr_id_perintah_inspek); //update sync = Y each group perintah inspek
+                                    }else{
+                                        this.loading.dismiss();
+                                        this.showAlert('Error' , rs.status);
+                                    }
+                                    console.log(JSON.stringify(this.data.response));
                                 }, error => {
-                                    this.updateIsSync('');
+                                    this.updateIsSync('' , []);
                                     this.loading.dismiss();
                                     this.showAlert('Fail' , 'No Network Connection');
                                 });     
@@ -172,7 +177,7 @@ export class SyncronPage {
         });
     }
 
-    updateIsSync(param){
+    updateIsSync(param , arr_id_perintah_inspek){
 
         this.sqlite.create({
             name: 'qc_checking_subkon.db',
@@ -180,11 +185,17 @@ export class SyncronPage {
         })
         .then((db: SQLiteObject) => {
             var sqlUpdate = "";
-            for(var idx = 0; idx < this.arrItemFormHeader.length; idx++){
-                var target_id_inspeksi = this.arrItemFormHeader[idx].id_inspeksi;
-                //console.log("Target Id To update");
-                sqlUpdate = sqlUpdate + "UPDATE m_inspek SET is_sync='"+param+"' WHERE id_inspeksi='"+target_id_inspeksi+"';";
-            }
+            var arr_id_inspeksi = _.uniq(_.pluck(_.flatten(this.arrItemFormHeader), "id_inspeksi"));
+            console.log(arr_id_inspeksi.join(","));
+
+            // for(var idx = 0; idx < this.arrItemFormHeader.length; idx++){
+            //     var target_id_inspeksi = this.arrItemFormHeader[idx].id_inspeksi;
+            //     //console.log("Target Id To update");
+            //     sqlUpdate = sqlUpdate + "UPDATE m_inspek SET is_sync='"+param+"' WHERE id_inspeksi='"+target_id_inspeksi+"';";
+            // }
+            sqlUpdate = "UPDATE m_inspek SET is_sync='"+param+"' WHERE id_inspeksi IN (" + arr_id_inspeksi + ");"+
+                        "UPDATE t_perintah_inspek SET download='Y' WHERE no_perintah IN (" + arr_id_perintah_inspek + ");";
+            console.log(sqlUpdate);
             this.sqlitePorter.importSqlToDb(db, sqlUpdate)
             .then(() => {
                 console.log('Updated');

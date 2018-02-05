@@ -29,8 +29,6 @@ export class ListPage {
 
         // Let's populate this page with some filler content for funzies
         this.items = [];
-
-
         
     }
 
@@ -54,6 +52,7 @@ export class ListPage {
                         for(var i=0; i<res.rows.length; i++) {
                             let data1 = {
                                             icon:"",
+                                            id_perintah_inspek : "",
                                             id_inspeksi : "",
                                             tanggal_inspeksi : "",
                                             nama_inspektor : "",
@@ -69,6 +68,7 @@ export class ListPage {
                                             date_created:"",
                                             is_sync:""};  
                             data1.icon                = 'paper-plane';
+                            data1.id_perintah_inspek  = res.rows.item(i).id_perintah_inspek;
                             data1.id_inspeksi         = res.rows.item(i).id_inspeksi;
                             data1.tanggal_inspeksi    = res.rows.item(i).tanggal_inspeksi;
                             data1.nama_inspektor      = res.rows.item(i).nama_inspektor;

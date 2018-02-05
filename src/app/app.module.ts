@@ -6,6 +6,7 @@ import { HttpModule } from '@angular/http';
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { PKerjaPage } from '../pages/p-kerja/p-kerja';
+import { ModalContentPage } from '../pages/p-kerja/p-kerja';
 import { ListPage } from '../pages/list/list';
 import { InspekPage } from '../pages/inspek/inspek';
 import { Inspek2Page } from '../pages/inspek2/inspek2';
@@ -21,6 +22,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     MyApp,
     HomePage,
     PKerjaPage,
+    ModalContentPage,
     ListPage,
     InspekPage,
     Inspek2Page,
@@ -36,6 +38,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     MyApp,
     HomePage,
     PKerjaPage,
+    ModalContentPage,
     ListPage,
     InspekPage,
     Inspek2Page,

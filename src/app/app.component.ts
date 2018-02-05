@@ -3,10 +3,10 @@ import { Nav, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
-import { HttpModule } from '@angular/http';
-import 'rxjs/add/operator/map';
+// import { HttpModule } from '@angular/http';
+// import 'rxjs/add/operator/map';
 import { SQLite, SQLiteObject } from '@ionic-native/sqlite';
-
+import { SQLitePorter } from '@ionic-native/sqlite-porter';
 
 import { HomePage } from '../pages/home/home';
 import { PKerjaPage } from '../pages/p-kerja/p-kerja';
@@ -26,7 +26,7 @@ export class MyApp {
 
   pages: Array<{title: string, component: any}>;
 
-  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen,private sqlite: SQLite) {
+  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen,private sqlite: SQLite,private sqlitePorter: SQLitePorter) {
     this.initializeApp();
 
     // used for an example of ngFor and navigation
@@ -34,7 +34,7 @@ export class MyApp {
       { title: 'Home', component: HomePage },
       { title: 'Perintah Inspek', component: PKerjaPage },
       { title: 'List Inspect', component: ListPage },
-      { title: 'Entry Inspect', component: InspekPage },
+      // { title: 'Entry Inspect', component: InspekPage },
       { title: 'Entry Inspect V2', component: Inspek2Page },
       { title: 'Syncron Inspect', component: SyncronPage }
     ];
@@ -59,6 +59,7 @@ export class MyApp {
         var sql = `
           CREATE TABLE IF NOT EXISTS m_inspek(
             id_inspeksi INTEGER PRIMARY KEY,
+            id_perintah_inspek VARCHAR(150),
             tanggal_inspeksi datetime,
             nama_inspektor VARCHAR(150),
             nama_subkon VARCHAR(150),
@@ -105,7 +106,7 @@ export class MyApp {
         .then(res => console.log('@Executed Init SQL t_detail_pemeriksaan table'))
         .catch(e => console.log(JSON.stringify(e)));
 
-         var sql4 = `CREATE TABLE t_perintah_inspek(
+         var sql4 = `CREATE TABLE IF NOT EXISTS t_perintah_inspek(
           trid varchar(30) PRIMARY KEY,
           po varchar(20) DEFAULT NULL,
           idmat varchar(20) DEFAULT NULL,
@@ -113,10 +114,12 @@ export class MyApp {
           qty_ord int(5) DEFAULT NULL,
           vendor varchar(150) DEFAULT NULL,
           download varchar(1) DEFAULT 'N',
+          tgl_download varchar(150) DEFAULT NULL,
           qty_inspek int(5) DEFAULT NULL,
           tgl_entry timestamp NULL,
           po_item varchar(10) DEFAULT NULL,
-          no_perintah varchar(20) DEFAULT NULL)`;
+          no_perintah varchar(50) DEFAULT NULL,
+          tgl_inspek varchar(50) DEFAULT NULL)`;
             
  
         
@@ -132,6 +135,13 @@ export class MyApp {
         // this.sqlitePorter.importJsonToDb(db, sql2)
         //   .then(() => console.log('@Imported'))
         //   .catch(e => console.error(e));
+        // (trid,po,idmat,deskripsi,qty_ord,vendor,download,qty_inspek,tgl_entry,po_item,no_perintah)
+
+        // let sqlIns = 'DELETE FROM t_perintah_inspek';
+     
+        //  this.sqlitePorter.importSqlToDb(db, sqlIns)
+        //  .then(() => console.log('@Imported'))
+        //  .catch(e => console.error(e));
       })
     }
 

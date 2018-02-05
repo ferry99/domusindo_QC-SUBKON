@@ -8,18 +8,18 @@
 </ion-header>
 
 
-<ion-content > 	
-	<ion-list inset>
-	  <button ion-item >
-	  	<h2>Box MFI</h2>
-	    <h3>PO:6765737843849</h3>
-	    <p>BERKAT WIDA ABADI,CV.</p>
-	  </button>
-
-	  <button ion-item >
-	    <h2>Box MFI</h2>
-	   	<h3>PO:23e2834u384849</h3>
-	    <p>BERKAT WIDA ABADI,CV.</p>
-	  </button>
-	</ion-list>	
+<ion-content>
+  <ion-list>
+      <ion-item>   
+      <h1>Choose item for inspect: </h1>     
+      </ion-item>
+      <ion-item *ngFor="let item of items_inspeksi" (click)="openPage(item)">
+        <h2>{{item.deskripsi}}</h2>   
+        <h2>{{item.po}}</h2>
+        <h3>{{item.vendor}}</h3> 
+        <h3>Qty Inspek = {{item.qty_inspek}}</h3>     
+        <ion-note item-end>	          
+        </ion-note>
+      </ion-item>
+  </ion-list>
 </ion-content>

@@ -20,8 +20,11 @@ import { SQLitePorter } from '@ionic-native/sqlite-porter';
 export class InspekPage {
 
 	// data            = { date:"", type:"", description:"", amount:0 };
+	item_inspek:any = {};
+	is_from_perintah = false;
 
 	itemFormsHeader = {
+		id_perintah_inspek : "",
 		tanggal_inspeksi : new Date().toISOString(),
 		nama_inspektor : "",
 		nama_subkon : "",
@@ -51,6 +54,21 @@ export class InspekPage {
 			public loadingCtrl: LoadingController,
 			public alertCtrl: AlertController,
 			private sqlitePorter: SQLitePorter) {
+
+  	console.log(navParams.get("firstPassed"));
+  	if(navParams.get("firstPassed") != null){//IF ENTRY FROM PERINTAH INSPEK
+  		this.is_from_perintah = true;
+  		this.item_inspek = navParams.get("firstPassed");
+  		this.itemFormsHeader.id_perintah_inspek = this.item_inspek.no_perintah;
+		this.itemFormsHeader.nama_subkon = this.item_inspek.vendor;
+		this.itemFormsHeader.no_po = this.item_inspek.po;
+		this.itemFormsHeader.nama_barang = this.item_inspek.deskripsi;
+		this.itemFormsHeader.id_material = this.item_inspek.idmat;
+  		console.log(JSON.stringify(navParams.get("firstPassed")));
+  	}else if(navParams.get("firstPassed") == null){
+  		console.log('No data passed');
+		//console.log(JSON.stringify(navParams.get("firstPassed")));
+  	}
 
   	this.itemForms = [  	
 					 	{rowid: "" , id_inspeksi : "" , id_pemeriksaan : "MM1" , category: "metal_mentahan" ,  label: "Ukuran Tidak Sesuai"  , option:"" , qty:"" , note:""},
@@ -124,8 +142,9 @@ export class InspekPage {
 				qty_defect = (+qty_defect) + (+activeItemForm[idx].qty);
 			}
 			this.date = new Date();
-			this.today_date = this.date.getFullYear().toString()+'-'+(this.date.getMonth()+1).toString()+'-'+this.date.getDate().toString();			
-			
+			this.today_date = this.date.getFullYear().toString()+'-'+(this.date.getMonth()+1).toString()+'-'+this.date.getDate().toString();	
+			//console.log(this.itemFormsHeader.id_perintah_inspek);
+			var id_perintah_inspek	= this.itemFormsHeader.id_perintah_inspek;
 			var tanggal_inspeksi    = new_format_tanggal_inspeksi; 
 			var nama_inspektor      = this.itemFormsHeader.nama_inspektor; 
 			var nama_subkon         = this.itemFormsHeader.nama_subkon;
@@ -137,11 +156,11 @@ export class InspekPage {
 			var cat_ketidaksesuaian = this.itemFormsHeader.cat_ketidaksesuaian;
 			var date_created        = this.today_date;
 			var is_sync				= '';
-			var arrToInsert = [tanggal_inspeksi,nama_inspektor,nama_subkon ,lokasi_subkon,no_po ,id_material,nama_barang,jenis_barang,qty_check,qty_defect,cat_ketidaksesuaian,date_created,is_sync]; 
-			//console.log(arrToInsert);
-			console.log('QTY DEFECT' + qty_defect);
+			var arrToInsert = [id_perintah_inspek,tanggal_inspeksi,nama_inspektor,nama_subkon ,lokasi_subkon,no_po ,id_material,nama_barang,jenis_barang,qty_check,qty_defect,cat_ketidaksesuaian,date_created,is_sync]; 
+			// console.log(arrToInsert);
+			//console.log('QTY DEFECT' + qty_defect);
 
-			db.executeSql('INSERT INTO m_inspek VALUES(NULL,?,?,?,?,?,?,?,?,?,?,?,?,?)', arrToInsert)
+			db.executeSql('INSERT INTO m_inspek VALUES(NULL,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', arrToInsert)
 			.then(res => {
 				console.log('@Added Master Inspeksi: ' + JSON.stringify(res)); 
 
@@ -159,7 +178,7 @@ export class InspekPage {
 				    }
 				};
 
-				console.log(JSON.stringify(sqlJson));
+				// console.log(JSON.stringify(sqlJson));
 				this.sqlitePorter.importJsonToDb(db, sqlJson)
 					.then(() => console.log('@Added Item Pemeriksaan'))
 					.catch(e => console.error(JSON.stringify(e)));
@@ -167,6 +186,10 @@ export class InspekPage {
 				loading.dismiss();
 				this.isShow = true;
 				this.showAlert('Notice','Success!');
+				if(this.is_from_perintah == true){
+					this.navCtrl.pop();
+					//console.log('pop');
+				}
 				// alert('success:' + JSON.stringify(res));
 			})
 			.catch(e => {

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams , ActionSheetController} from 'ionic-angular';
+import { ModalController, ViewController } from 'ionic-angular';
 import { SQLite, SQLiteObject } from '@ionic-native/sqlite';
 import { LoadingController } from 'ionic-angular';
 import { AlertController } from 'ionic-angular';
@@ -16,7 +17,6 @@ import _ from 'underscore';
  * Ionic pages and navigation.
  */
 
-@IonicPage()
 @Component({
   selector: 'page-p-kerja',
   templateUrl: 'p-kerja.html',
@@ -26,7 +26,8 @@ export class PKerjaPage {
   data:any = {};
   loading:any;
   perintah_inspek:any = '';
-  id_perintah_inspek:any = '';
+  id_perintah_inspek:any = [];
+  id_perintah_inspek_local:any = [];
 
 
   constructor(public navCtrl: NavController,
@@ -36,8 +37,15 @@ export class PKerjaPage {
   				public http: Http,
   				public loadingCtrl: LoadingController,
   				public alertCtrl: AlertController,
-  				private sqlitePorter: SQLitePorter) {
+  				private sqlitePorter: SQLitePorter,
+  				public modalCtrl: ModalController) {
+  	this.getPerintahInspekLocal();
   }
+
+  openModal(characterNum) {
+    let modal = this.modalCtrl.create(ModalContentPage, characterNum);
+    modal.present();
+ }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad PKerjaPage');
@@ -49,7 +57,7 @@ export class PKerjaPage {
         cssClass: 'action-sheets-basic-page',
         buttons: [          
           {
-            text: 'Ambil PK',
+            text: 'Ambil Perintah Inspek',
             icon:  'share' ,
             handler: () => {
               console.log('Getting Perintah Kerja');
@@ -70,8 +78,8 @@ export class PKerjaPage {
       actionSheet.present();
   }
 
+  //WORKFLOW GET NON LOCAL -> SAVE -> UPDATE -> GET LOCAL -> DISPLAY
   getPerintahInspek(){
-
   	this.loading = this.loadingCtrl.create({
   	    content: 'Sync Data...'
   	});
@@ -86,54 +94,99 @@ export class PKerjaPage {
   	    var rs = JSON.parse(this.data.response);
   	    if(rs.success == true){
 	  	    this.loading.dismiss();
-  	        this.showAlert('Notice' , 'Get Perintah Inspek Success');  	        
-  	        this.savePerintahInspekLocal(rs.data);
-  	        let rsq = _.groupBy(rs.data, "no_perintah"); // GROUPING BY NO_PERINTAH
-  	        this.id_perintah_inspek = _.keys(rsq); // GET ID_PERINTAH_INSPEK
+  	        //this.showAlert('Notice' , 'Get Perintah Inspek Success');  	        
+  	        this.savePerintahInspekLocal(rs.data);  	       
   	    }else{
-  	        this.showAlert('Error' , 'Sync Failed!!!!');
+  	    	if(rs.empty == true){
+		  	    this.loading.dismiss();
+  	    		this.showAlert('Error 01' , 'Perintah Inspek Baru Tidak Ditemukan');
+  	    	}else{
+  	    		this.showAlert('Error' , 'Sync Failed!!!!');
+  	    	}
   	    }
-  	    //console.log(JSON.stringify(data));
   	}, error => {
   		console.log(JSON.stringify(error));
-  	    // this.loading.dismiss();
-  	    // this.showAlert('Fail' , 'No Network Connection');
+  	    this.loading.dismiss();
+  	    this.showAlert('Fail' , 'No Network Connection');
   	});  
   }
 
-  savePerintahInspekLocal(objPerintahInspek){
-  	console.log(JSON.stringify(objPerintahInspek));
-	// this.sqlite.create({
-	// 	name: 'qc_checking_subkon.db',
-	// 	location: 'default'
-	// }).then((db: SQLiteObject) => {  				
-	// 	var arrToInsert = [tanggal_inspeksi,nama_inspektor,nama_subkon ,lokasi_subkon,no_po ,id_material,nama_barang,jenis_barang,qty_check,qty_defect,cat_ketidaksesuaian,date_created,is_sync]; 
-	// 	//console.log(arrToInsert);
-	// 		var sqlJson = {
-	// 		    "data":{
-	// 		        "inserts":{
-	// 		            "t_detail_pemeriksaan":activeItemForm
-	// 		        }
-	// 		    }
-	// 		};
-	// 		console.log(JSON.stringify(sqlJson));
-	// 		this.sqlitePorter.importJsonToDb(db, sqlJson)
-	// 			.then(() => console.log('@Added Item Pemeriksaan'))
-	// 			.catch(e => console.error(JSON.stringify(e)));
+	savePerintahInspekLocal(objPerintahInspek){
+		this.sqlite.create({
+			name: 'qc_checking_subkon.db',
+			location: 'default'
+		}).then((db: SQLiteObject) => {  				
+				var sqlJson = {
+				    "data":{
+				        "inserts":{
+				            "t_perintah_inspek":objPerintahInspek
+				        }
+				    }
+				};
+				//console.log(JSON.stringify(sqlJson));
+				this.sqlitePorter.importJsonToDb(db, sqlJson)
+					.then(() => {
+						console.log('@Added items_inspeksi');
+					 	let rsq = _.groupBy(objPerintahInspek, "no_perintah"); // GROUPING BY NO_PERINTAH
+	        		this.id_perintah_inspek = _.keys(rsq); // GET ID_PERINTAH_INSPEK
+						  this.updatePerintahInspekNonLocal(this.id_perintah_inspek , 'Y');
+					})
+					.catch(e => console.error(JSON.stringify(e)));			
+				this.showAlert('Notice','Success!');
+			})
+			.catch(e => {		
+				this.showAlert('Notice','Error Insert Local DB!');
+				alert(JSON.stringify(e));         
+			});	
+	}
 
-	// 		loading.dismiss();
-	// 		this.isShow = true;
-	// 		this.showAlert('Notice','Success!');
-	// 		// alert('success:' + JSON.stringify(res));
-	// 	})
-	// 	.catch(e => {
-	// 		loading.dismiss();
-	// 		this.isShow = true;
-	// 		this.showAlert('Notice','Error Insert DB!');
-	// 		// alert(JSON.stringify(e));
-	// 		alert(JSON.stringify(e));         
-	// 	});	
-  }
+
+	updatePerintahInspekNonLocal(id_perintah_inspek , status){
+		var objPost = {
+			arr_id_perintah_inspek : id_perintah_inspek,
+			status : status
+		}
+		var objPost2 = JSON.stringify(objPost);
+		// console.log(objPost2);
+	  	this.http.post('http://192.168.0.8/domuscom/f_lib_domuscom/dept/qa/qc_checking_subkon/controller/c.api_update_perintah_inspek.php',objPost2)
+	  	.subscribe(data => {
+	  	    this.data.response = data["_body"]; 
+	  	    var rs = JSON.parse(this.data.response);
+	  	    //console.log(JSON.stringify(this.data.response));
+	  	    if(rs.success == true){
+            this.getPerintahInspekLocal();
+		  	    console.log("@Update Status Success : " + rs.id_perintah_inspek);
+		  	    //this.showAlert('Success' , 'Update Success!!!!');
+	  	    }else{
+	  	        this.showAlert('Error' , 'Sync Failed!!!!');
+	  	    }
+	  	}, error => {
+	  		console.log(JSON.stringify(error));
+	  	    // this.loading.dismiss();
+	  	     this.showAlert('Fail' , 'No Network Connection');
+	  	}); 		
+	}
+
+	getPerintahInspekLocal(){
+		this.sqlite.create({
+			name: 'qc_checking_subkon.db',
+			location: 'default'
+		}).then((db: SQLiteObject) => {  				
+			var sql2 = 'SELECT * FROM t_perintah_inspek GROUP BY no_perintah';
+			var arr_id_perintah_inspek = [];
+			db.executeSql(sql2, {})
+			.then(res => {
+        var myArr = [];
+				for (let i = 0; i < res.rows.length; i++) { 
+					this.id_perintah_inspek_local.push(res.rows.item(i));
+				}
+				 console.log(this.id_perintah_inspek_local);
+			})
+			.catch(e => console.log(JSON.stringify(e)));
+		})
+	}
+
+
 
   showAlert(title,subtile) {
     let alert = this.alertCtrl.create({
@@ -144,4 +197,87 @@ export class PKerjaPage {
     alert.present();
   }
 
+}
+
+
+@Component({
+  template: `
+	<ion-header>
+	  <ion-toolbar>
+	    <ion-title>
+	      List Item Perintah Inspek
+	    </ion-title>
+	    <ion-buttons start>
+	      <button ion-button (click)="dismiss()">
+	        <span ion-text color="primary" showWhen="ios">Cancel</span>
+	        <ion-icon name="md-close" showWhen="android, windows"></ion-icon>
+	      </button>
+	    </ion-buttons>
+	  </ion-toolbar>
+	</ion-header>
+
+	<ion-content>
+	  <ion-list>
+	      <ion-item>        
+	        <h2>No Perintah Inspek : {{id_perintah_inspek}}</h2>      
+	      </ion-item>
+	      <ion-item *ngFor="let item of items_inspeksi">
+	        <h2>{{item.deskripsi}}</h2>   
+	        <h2>{{item.po}}</h2>
+	        <h3>{{item.vendor}}</h3>   
+	        <ion-note item-end>	          
+	        </ion-note>
+	      </ion-item>
+	  </ion-list>
+	</ion-content>
+	`
+})
+
+export class ModalContentPage {
+  character;
+  id_perintah_inspek = '';
+  items_inspeksi:any = [];
+
+
+  constructor(
+    public params: NavParams,
+    public viewCtrl: ViewController,
+    private sqlite: SQLite,
+    private sqlitePorter: SQLitePorter
+  ) {
+
+    this.clearVariable();
+
+    //FINDING RESULT ITEM INSPECT FROM SQLITE
+    this.id_perintah_inspek = this.params.get('charNum');
+
+  	this.sqlite.create({
+        name: 'qc_checking_subkon.db',
+        location: 'default'
+    }).then((db: SQLiteObject) => {
+      		var sql = 'SELECT * FROM t_perintah_inspek WHERE no_perintah = ?';	      		
+      		db.executeSql(sql ,[this.id_perintah_inspek])
+      		.then(res => {
+      			console.log('@Executed Select t_perintah_inspek');
+      			if (res.rows.length > 0) {
+  			        for (var i = 0; i < res.rows.length; i++) {
+  			          this.items_inspeksi.push(res.rows.item(i));  			          
+  			        }
+  			    }  			    
+      		}
+      		,(err)=>{
+      		    alert('Unable to execute sql: '+JSON.stringify(err));
+	        }) 
+      		.catch(e => console.log(JSON.stringify(e)));
+        })    
+  }
+
+  dismiss() {
+    this.viewCtrl.dismiss();
+  }
+
+  clearVariable(){
+  	this.id_perintah_inspek = '';
+  	this.items_inspeksi = [];
+  }
 }

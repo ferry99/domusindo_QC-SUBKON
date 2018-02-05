@@ -9,7 +9,7 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>Pemeriksaan Sub Kon</ion-title>
+    <ion-title>Pemeriksaan Sub Kon - {{itemFormsHeader.id_perintah_inspek}}</ion-title>
   </ion-navbar>
 </ion-header>
 
@@ -193,7 +193,7 @@
 			</ion-col>
 <!-- 			<ion-row radio-group [(ngModel)]="itemForms3[idx].option" [ngModelOptions]="{standalone:true}">
 				<ion-col col-auto>
-					<ion-item >
+					<ion-item>
 						<ion-label stacked>Good</ion-label>
 						<ion-radio value="Good"></ion-radio>
 					</ion-item>
@@ -227,7 +227,7 @@
 	</div>
 
     </ion-grid>
-    <button ion-button tappable large type="submit" [disabled]="itemFormsHeader.jenis_barang==''" *ngIf="isShow == true" block>Save Data</button>
+    <button ion-button tappable large type="submit" [disabled]="itemFormsHeader.jenis_barang=='' || itemFormsHeader.qty_check == ''" *ngIf="isShow == true" block>Save Data</button>
   </form>
      
 
