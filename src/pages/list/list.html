@@ -30,7 +30,7 @@
     <button ion-item *ngFor="let item of items" (click)="itemTapped($event, item)">
       <ion-icon [name]="item.icon" item-start></ion-icon>
       <span class="md-label-text">{{item.nama_subkon}}</span>
-      <p><span class="md-label-text">{{item.nama_inspektor}} | {{item.lokasi_subkon}} | {{item.tanggal_inspeksi}}</span></p>
+      <p><span class="md-label-text">{{item.nama_inspektor}} | {{item.lokasi_subkon}} | {{item.tanggal_inspeksi}} | Qty Check: {{item.qty_check}}</span></p>
       <div class="item-note" item-end>
         <p style="color:green">{{item.is_sync}}</p>
         <p>{{item.id_perintah_inspek}}</p>

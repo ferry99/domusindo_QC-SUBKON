@@ -88,14 +88,14 @@ export class PKerjaPage {
 
   	console.log('@Starting getting json');
 
-  	this.http.post('http://192.168.0.8/domuscom/f_lib_domuscom/dept/qa/qc_checking_subkon/controller/c.api_get_perintah_inspek.php','')
+  	this.http.post('http://192.168.0.8/domuscom/f_lib_domuscom/dept/qa/qc_checking_subkon/controller/c.api_get_perintah_inspek2.php','')
   	.subscribe(data => {
   	    this.data.response = data["_body"]; 
   	    var rs = JSON.parse(this.data.response);
   	    if(rs.success == true){
 	  	    this.loading.dismiss();
   	        //this.showAlert('Notice' , 'Get Perintah Inspek Success');  	        
-  	        this.savePerintahInspekLocal(rs.data);  	       
+  	        this.savePerintahInspekLocal(rs.data);  
   	    }else{
   	    	if(rs.empty == true){
 		  	    this.loading.dismiss();
@@ -225,7 +225,10 @@ export class PKerjaPage {
 	        <h2>{{item.deskripsi}}</h2>   
 	        <h2>{{item.po}}</h2>
 	        <h3>{{item.vendor}}</h3>   
-	        <ion-note item-end>	          
+          <h3>Qty Inspek = {{item.qty_inspek}}</h3>  
+          <h3>Sisa Qty Inspek = {{item.curr_qty_inspek}}</h3> 
+	        <ion-note item-end>	     
+            <p style="color:green">{{item.curr_qty_inspek == "0" ? "Finish" : "Havent Finish"}}</p>        
 	        </ion-note>
 	      </ion-item>
 	  </ion-list>

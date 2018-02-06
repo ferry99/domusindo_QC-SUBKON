@@ -1,9 +1,13 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { Events, NavController, NavParams } from 'ionic-angular';
 import { SQLite, SQLiteObject } from '@ionic-native/sqlite';
 import { LoadingController } from 'ionic-angular';
 import { AlertController } from 'ionic-angular';
 import { SQLitePorter } from '@ionic-native/sqlite-porter';
+
+import { HomePage } from '../home/home';
+import { Inspek2Page } from '../inspek2/inspek2';
+
 
 /**
  * Generated class for the InspekPage page.
@@ -25,6 +29,7 @@ export class InspekPage {
 
 	itemFormsHeader = {
 		id_perintah_inspek : "",
+		trid_perintah_inspek : "",
 		tanggal_inspeksi : new Date().toISOString(),
 		nama_inspektor : "",
 		nama_subkon : "",
@@ -41,6 +46,8 @@ export class InspekPage {
 	itemForms2      = [];
 	itemForms3      = [];
 	total_defect = 0;
+	statusInsert:boolean = true;
+
 	disableBtn: boolean;
 	myDropDown : any = '';
 	date : any = '';
@@ -49,16 +56,18 @@ export class InspekPage {
 
   constructor(
   			public navCtrl: NavController, 
+  			public events:Events,
   			public navParams: NavParams,
 			private sqlite: SQLite,
 			public loadingCtrl: LoadingController,
 			public alertCtrl: AlertController,
 			private sqlitePorter: SQLitePorter) {
 
-  	console.log(navParams.get("firstPassed"));
+  	//console.log(navParams.get("firstPassed"));
   	if(navParams.get("firstPassed") != null){//IF ENTRY FROM PERINTAH INSPEK
   		this.is_from_perintah = true;
   		this.item_inspek = navParams.get("firstPassed");
+  		this.itemFormsHeader.trid_perintah_inspek = this.item_inspek.trid;
   		this.itemFormsHeader.id_perintah_inspek = this.item_inspek.no_perintah;
 		this.itemFormsHeader.nama_subkon = this.item_inspek.vendor;
 		this.itemFormsHeader.no_po = this.item_inspek.po;
@@ -116,96 +125,123 @@ export class InspekPage {
 			content: 'Saving Data...'
 		});
 
-		loading.present();
 
 		if(this.itemFormsHeader.jenis_barang == ''){
 
 		}
 
-		this.sqlite.create({
-			name: 'qc_checking_subkon.db',
-			location: 'default'
-		}).then((db: SQLiteObject) => {
-			var qty_defect   = 0;
-			var jenis_barang = this.itemFormsHeader.jenis_barang;
-       		var new_format_tanggal_inspeksi = this.itemFormsHeader.tanggal_inspeksi.substring(0,10);
+		//IF QTY CHECK MORE THAN CURR QTY INSPEK
+		if(parseInt(this.itemFormsHeader.qty_check) > parseInt(this.item_inspek.curr_qty_inspek)){
+			this.statusInsert = false;
+		}else{
+			this.statusInsert = true;
+		}
 
-			if(jenis_barang == 'MM'){
-				var activeItemForm = this.itemForms;		
-			}else if(jenis_barang == 'MF'){
-				var activeItemForm = this.itemForms2;	
-			}else if(jenis_barang == 'WW'){
-				var activeItemForm = this.itemForms3;
-			}
+		if(this.statusInsert == true){
+					loading.present();
 
-			for(var idx in activeItemForm){
-				qty_defect = (+qty_defect) + (+activeItemForm[idx].qty);
-			}
-			this.date = new Date();
-			this.today_date = this.date.getFullYear().toString()+'-'+(this.date.getMonth()+1).toString()+'-'+this.date.getDate().toString();	
-			//console.log(this.itemFormsHeader.id_perintah_inspek);
-			var id_perintah_inspek	= this.itemFormsHeader.id_perintah_inspek;
-			var tanggal_inspeksi    = new_format_tanggal_inspeksi; 
-			var nama_inspektor      = this.itemFormsHeader.nama_inspektor; 
-			var nama_subkon         = this.itemFormsHeader.nama_subkon;
-			var lokasi_subkon       = this.itemFormsHeader.lokasi_subkon;
-			var no_po               = this.itemFormsHeader.no_po; 
-			var id_material         = this.itemFormsHeader.id_material;
-			var nama_barang         = this.itemFormsHeader.nama_barang;
-			var qty_check           = this.itemFormsHeader.qty_check;
-			var cat_ketidaksesuaian = this.itemFormsHeader.cat_ketidaksesuaian;
-			var date_created        = this.today_date;
-			var is_sync				= '';
-			var arrToInsert = [id_perintah_inspek,tanggal_inspeksi,nama_inspektor,nama_subkon ,lokasi_subkon,no_po ,id_material,nama_barang,jenis_barang,qty_check,qty_defect,cat_ketidaksesuaian,date_created,is_sync]; 
-			// console.log(arrToInsert);
-			//console.log('QTY DEFECT' + qty_defect);
+			this.sqlite.create({
+				name: 'qc_checking_subkon.db',
+				location: 'default'
+			}).then((db: SQLiteObject) => {
+				var qty_defect   = 0;
+				var jenis_barang = this.itemFormsHeader.jenis_barang;
+	       		var new_format_tanggal_inspeksi = this.itemFormsHeader.tanggal_inspeksi.substring(0,10);
 
-			db.executeSql('INSERT INTO m_inspek VALUES(NULL,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', arrToInsert)
-			.then(res => {
-				console.log('@Added Master Inspeksi: ' + JSON.stringify(res)); 
+				if(jenis_barang == 'MM'){
+					var activeItemForm = this.itemForms;		
+				}else if(jenis_barang == 'MF'){
+					var activeItemForm = this.itemForms2;	
+				}else if(jenis_barang == 'WW'){
+					var activeItemForm = this.itemForms3;
+				}
 
 				for(var idx in activeItemForm){
-					activeItemForm[idx].rowid = 'NULL';
-					activeItemForm[idx].id_inspeksi = res.insertId; 
-					//console.log(JSON.stringify(this.itemForms[idx]));
+					qty_defect = (+qty_defect) + (+activeItemForm[idx].qty);
 				}
+				this.date = new Date();
+				this.today_date = this.date.getFullYear().toString()+'-'+(this.date.getMonth()+1).toString()+'-'+this.date.getDate().toString();	
+				//console.log(this.itemFormsHeader.id_perintah_inspek);
+				var id_perintah_inspek	= this.itemFormsHeader.id_perintah_inspek;
+				var tanggal_inspeksi    = new_format_tanggal_inspeksi; 
+				var nama_inspektor      = this.itemFormsHeader.nama_inspektor; 
+				var nama_subkon         = this.itemFormsHeader.nama_subkon;
+				var lokasi_subkon       = this.itemFormsHeader.lokasi_subkon;
+				var no_po               = this.itemFormsHeader.no_po; 
+				var id_material         = this.itemFormsHeader.id_material;
+				var nama_barang         = this.itemFormsHeader.nama_barang;
+				var qty_check           = this.itemFormsHeader.qty_check;
+				var cat_ketidaksesuaian = this.itemFormsHeader.cat_ketidaksesuaian;
+				var date_created        = this.today_date;
+				var is_sync				= '';
+				var arrToInsert = [id_perintah_inspek,tanggal_inspeksi,nama_inspektor,nama_subkon ,lokasi_subkon,no_po ,id_material,nama_barang,jenis_barang,qty_check,qty_defect,cat_ketidaksesuaian,date_created,is_sync]; 
+				// console.log(arrToInsert);
+				//console.log('QTY DEFECT' + qty_defect);
 
-				var sqlJson = {
-				    "data":{
-				        "inserts":{
-				            "t_detail_pemeriksaan":activeItemForm
-				        }
-				    }
-				};
+				db.executeSql('INSERT INTO m_inspek VALUES(NULL,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', arrToInsert)
+				.then(res => {
+					console.log('@Added Master Inspeksi: ' + JSON.stringify(res)); 
 
-				// console.log(JSON.stringify(sqlJson));
-				this.sqlitePorter.importJsonToDb(db, sqlJson)
-					.then(() => console.log('@Added Item Pemeriksaan'))
-					.catch(e => console.error(JSON.stringify(e)));
+					for(var idx in activeItemForm){
+						activeItemForm[idx].rowid = 'NULL';
+						activeItemForm[idx].id_inspeksi = res.insertId; 
+						//console.log(JSON.stringify(this.itemForms[idx]));
+					}
 
+					var sqlJson = {
+					    "data":{
+					        "inserts":{
+					            "t_detail_pemeriksaan":activeItemForm
+					        }
+					    }
+					};
+
+					// console.log(JSON.stringify(sqlJson));
+					this.sqlitePorter.importJsonToDb(db, sqlJson)
+						.then(() => {
+							console.log('@Added Item Pemeriksaan');
+							//UPDATE curr_qty_inspek
+							var sqlUpdate = "UPDATE t_perintah_inspek SET curr_qty_inspek=(SELECT curr_qty_inspek FROM t_perintah_inspek WHERE trid = '" + this.itemFormsHeader.trid_perintah_inspek + "')-'" + this.itemFormsHeader.qty_check + "' WHERE trid = '" + this.itemFormsHeader.trid_perintah_inspek + "';";						           
+							this.sqlitePorter.importSqlToDb(db, sqlUpdate)
+							.then(() => {
+							    console.log('Updated');
+							    loading.dismiss();
+							    this.isShow = true;
+							    this.showAlert('Notice','Success!');
+							    if(this.is_from_perintah == true){
+							    	this.events.publish('reloadDetails');
+							    	this.navCtrl.setRoot(Inspek2Page);
+							    }
+							})
+							.catch(e =>{
+								loading.dismiss();
+							    console.error(JSON.stringify(e))
+							});
+						})
+						.catch(e => console.error(JSON.stringify(e)));
+
+
+					// alert('success:' + JSON.stringify(res));
+				})
+				.catch(e => {
+					loading.dismiss();
+					this.isShow = true;
+					this.showAlert('Notice','Error Insert DB!');
+					// alert(JSON.stringify(e));
+					alert(JSON.stringify(e));         
+				});
+			}).catch(e => {
 				loading.dismiss();
 				this.isShow = true;
-				this.showAlert('Notice','Success!');
-				if(this.is_from_perintah == true){
-					this.navCtrl.pop();
-					//console.log('pop');
-				}
-				// alert('success:' + JSON.stringify(res));
-			})
-			.catch(e => {
-				loading.dismiss();
-				this.isShow = true;
-				this.showAlert('Notice','Error Insert DB!');
+				this.showAlert('Notice','Error!');
 				// alert(JSON.stringify(e));
-				alert(JSON.stringify(e));         
+				console.log(e);      
 			});
-		}).catch(e => {
+		}else{
 			loading.dismiss();
+			alert('Qty Tidak Sesuai');
 			this.isShow = true;
-			this.showAlert('Notice','Error!');
-			// alert(JSON.stringify(e));
-			console.log(e);      
-		});
+		}
 	}
 
 	saveData1(){

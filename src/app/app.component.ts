@@ -119,7 +119,8 @@ export class MyApp {
           tgl_entry timestamp NULL,
           po_item varchar(10) DEFAULT NULL,
           no_perintah varchar(50) DEFAULT NULL,
-          tgl_inspek varchar(50) DEFAULT NULL)`;
+          tgl_inspek varchar(50) DEFAULT NULL,
+          curr_qty_inspek varchar(20) DEFAULT NULL)`;
             
  
         
