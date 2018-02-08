@@ -63,6 +63,7 @@ export class ListPage {
                                             nama_barang : "",
                                             jenis_barang : "",
                                             qty_check : "",
+                                            qty_fail : "",
                                             qty_defect : "",
                                             cat_ketidaksesuaian : "",
                                             date_created:"",
@@ -79,6 +80,7 @@ export class ListPage {
                             data1.nama_barang         = res.rows.item(i).nama_barang;
                             data1.jenis_barang        = res.rows.item(i).jenis_barang; 
                             data1.qty_check           = res.rows.item(i).qty_check; 
+                            data1.qty_fail            = res.rows.item(i).qty_fail; 
                             data1.qty_defect          = res.rows.item(i).qty_defect; 
                             data1.cat_ketidaksesuaian = res.rows.item(i).cat_ketidaksesuaian; 
                             data1.date_created        = res.rows.item(i).date_created; 

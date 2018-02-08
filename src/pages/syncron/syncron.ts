@@ -73,6 +73,7 @@ export class SyncronPage {
                 if(res.rows.length > 0) { 
                     for (let i = 0; i < res.rows.length; i++) {   
                         let data1 = {    id_perintah_inspek :"",
+                                        trid_perintah_inspek :"",
                                         id_inspeksi : "",
                                         tanggal_inspeksi : "",
                                         nama_inspektor : "",
@@ -102,24 +103,27 @@ export class SyncronPage {
                                     item1.option         = res2.rows.item(j).option;  
                                     item1.qty            = res2.rows.item(j).qty;
                                     item1.note           = res2.rows.item(j).note;
+                                    item1.status_fail    = res2.rows.item(j).status_fail;
+
                                     this.arrDetailItem.push(item1);
                                     //console.log(JSON.stringify(this.arrDetailItem));
                                 }                               
                             }
-                            data1.id_perintah_inspek  = res.rows.item(i).id_perintah_inspek;
-                            data1.id_inspeksi         = res.rows.item(i).id_inspeksi;
-                            data1.tanggal_inspeksi    = res.rows.item(i).tanggal_inspeksi;
-                            data1.nama_inspektor      = res.rows.item(i).nama_inspektor;
-                            data1.nama_subkon         = res.rows.item(i).nama_subkon; 
-                            data1.lokasi_subkon       = res.rows.item(i).lokasi_subkon;
-                            data1.no_po               = res.rows.item(i).no_po;  
-                            data1.id_material         = res.rows.item(i).id_material;
-                            data1.nama_barang         = res.rows.item(i).nama_barang;
-                            data1.jenis_barang        = res.rows.item(i).jenis_barang; 
-                            data1.qty_check           = res.rows.item(i).qty_check; 
-                            data1.qty_defect          = res.rows.item(i).qty_defect; 
-                            data1.cat_ketidaksesuaian = res.rows.item(i).cat_ketidaksesuaian; 
-                            data1.date_created        = res.rows.item(i).date_created; 
+                            data1.id_perintah_inspek   = res.rows.item(i).id_perintah_inspek;
+                            data1.trid_perintah_inspek = res.rows.item(i).trid_perintah_inspek;
+                            data1.id_inspeksi          = res.rows.item(i).id_inspeksi;
+                            data1.tanggal_inspeksi     = res.rows.item(i).tanggal_inspeksi;
+                            data1.nama_inspektor       = res.rows.item(i).nama_inspektor;
+                            data1.nama_subkon          = res.rows.item(i).nama_subkon; 
+                            data1.lokasi_subkon        = res.rows.item(i).lokasi_subkon;
+                            data1.no_po                = res.rows.item(i).no_po;  
+                            data1.id_material          = res.rows.item(i).id_material;
+                            data1.nama_barang          = res.rows.item(i).nama_barang;
+                            data1.jenis_barang         = res.rows.item(i).jenis_barang; 
+                            data1.qty_check            = res.rows.item(i).qty_check; 
+                            data1.qty_defect           = res.rows.item(i).qty_defect; 
+                            data1.cat_ketidaksesuaian  = res.rows.item(i).cat_ketidaksesuaian; 
+                            data1.date_created         = res.rows.item(i).date_created; 
                             this.arrItemFormHeader.push(data1);                     
                             //STEP 3 -------- POSTING DATA TO DOMUSCOM
                             //console.log('Count'+  i + '=' +res.rows.length);
@@ -145,7 +149,7 @@ export class SyncronPage {
                                         this.loading.dismiss();
                                         this.showAlert('Error' , rs.status);
                                     }
-                                    console.log(JSON.stringify(this.data.response));
+                                    //console.log(JSON.stringify(this.data.response));
                                 }, error => {
                                     this.updateIsSync('' , []);
                                     this.loading.dismiss();
@@ -204,7 +208,7 @@ export class SyncronPage {
             .catch(e =>{
                 console.error(JSON.stringify(e))
             });
-            })
+        })
             
     }
 

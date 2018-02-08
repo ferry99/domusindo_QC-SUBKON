@@ -34,7 +34,7 @@ export class MyApp {
       { title: 'Home', component: HomePage },
       { title: 'Perintah Inspek', component: PKerjaPage },
       { title: 'List Inspect', component: ListPage },
-      // { title: 'Entry Inspect', component: InspekPage },
+      { title: 'Entry Inspect', component: InspekPage },
       { title: 'Entry Inspect V2', component: Inspek2Page },
       { title: 'Syncron Inspect', component: SyncronPage }
     ];
@@ -60,6 +60,7 @@ export class MyApp {
           CREATE TABLE IF NOT EXISTS m_inspek(
             id_inspeksi INTEGER PRIMARY KEY,
             id_perintah_inspek VARCHAR(150),
+            trid_perintah_inspek VARCHAR(150),
             tanggal_inspeksi datetime,
             nama_inspektor VARCHAR(150),
             nama_subkon VARCHAR(150),
@@ -69,6 +70,7 @@ export class MyApp {
             nama_barang VARCHAR(150),
             jenis_barang VARCHAR(150),
             qty_check VARCHAR(150),
+            qty_fail VARCHAR(150),
             qty_defect VARCHAR(150),
             cat_ketidaksesuaian VARCHAR(150),
             date_created datetime,
@@ -99,7 +101,8 @@ export class MyApp {
               label VARCHAR(150),
               option VARCHAR(150),
               qty VARCHAR(150),
-              note VARCHAR(150))`;
+              note VARCHAR(150),
+              status_fail VARCHAR(150))`;
             
         
         db.executeSql(sql3, {})

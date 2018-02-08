@@ -91,57 +91,60 @@
 			    </ion-item>
 			</ion-col>			
 		</ion-row>	
+
 		<h3><ion-icon name="arrow-dropright"></ion-icon> Item Ketidaksesuaian</h3>
-
 		<div *ngIf="itemFormsHeader.jenis_barang == 'MM'">
-		<h4>Metal Mentahan</h4>
-		<ion-row *ngFor="let item of itemForms ; let idx = index" >
-			<ion-row  >
-				<ion-col col-6>
-					<ion-item>
-				    	<p style="word-wrap:break-word;font-size:17px" class="p-primary md-label-text">{{item.label}} :</p>
-				    </ion-item>
-				</ion-col>
-<!-- 				<ion-row radio-group [(ngModel)]="itemForms[idx].option" [ngModelOptions]="{standalone:true}">
-					<ion-col col-auto>
-						<ion-item >
-							<ion-label stacked>Good</ion-label>
-							<ion-radio value="Good"></ion-radio>
+			<h4 style="display:inline">Metal Mentahan</h4><span style="font-size:14px;color:gray;display:inline"> (Note: Centang jika fail / reject)</span>
+			<ion-row *ngFor="let item of itemForms ; let idx = index" >
+					<ion-col col-5>
+						<ion-item>
+					    	<p style="word-wrap:break-word;font-size:17px" class="p-primary md-label-text">{{item.label}} :</p>
+					    </ion-item>
+					</ion-col>
+	<!-- 				<ion-row radio-group [(ngModel)]="itemForms[idx].option" [ngModelOptions]="{standalone:true}">
+						<ion-col col-auto>
+							<ion-item >
+								<ion-label stacked>Good</ion-label>
+								<ion-radio value="Good"></ion-radio>
+							</ion-item>
+						</ion-col>
+						<ion-col col-auto>
+							<ion-item>
+								<ion-label stacked>No</ion-label>
+								<ion-radio value="N"></ion-radio>
+							</ion-item>
+						</ion-col>
+						<ion-col col-auto>
+							<ion-item>
+								<ion-label stacked>NA</ion-label>
+								<ion-radio value="NA"></ion-radio>
+							</ion-item>
+						</ion-col>	
+					</ion-row> -->		
+					<ion-col col-2>
+						<ion-item>
+						    <ion-label color="primary" stacked></ion-label>		    
+		      				<ion-input type="number" placeholder="QTY" [(ngModel)]="itemForms[idx].qty" name="amount" required="" ></ion-input>
+					    </ion-item>
+					</ion-col>
+					<ion-col col-4>
+						<ion-item>
+						    <ion-label color="primary" stacked></ion-label>		    
+		      				<ion-input type="text" placeholder="Note" [(ngModel)]="itemForms[idx].note" name="description" required="" ></ion-input>
+					    </ion-item>
+					</ion-col>
+					<ion-col col-1>
+						<ion-item style="padding-top:15px">
+							<ion-label color="primary" floating style="top:0px;left:0px">Fail</ion-label>		    
+							<ion-checkbox [(ngModel)]="itemForms[idx].status_fail"  [ngModelOptions]="{standalone:true}"></ion-checkbox>
 						</ion-item>
 					</ion-col>
-					<ion-col col-auto>
-						<ion-item>
-							<ion-label stacked>No</ion-label>
-							<ion-radio value="N"></ion-radio>
-						</ion-item>
-					</ion-col>
-					<ion-col col-auto>
-						<ion-item>
-							<ion-label stacked>NA</ion-label>
-							<ion-radio value="NA"></ion-radio>
-						</ion-item>
-					</ion-col>	
-				</ion-row> -->		
-				<ion-col col-2>
-					<ion-item>
-					    <ion-label color="primary" stacked></ion-label>		    
-	      				<ion-input type="number" placeholder="QTY" [(ngModel)]="itemForms[idx].qty" name="amount" required="" ></ion-input>
-				    </ion-item>
-				</ion-col>
-				<ion-col col-4>
-					<ion-item>
-					    <ion-label color="primary" stacked></ion-label>		    
-	      				<ion-input type="text" placeholder="Note" [(ngModel)]="itemForms[idx].note" name="description" required="" ></ion-input>
-				    </ion-item>
-				</ion-col>
-		    </ion-row>
-
-		</ion-row>
+			</ion-row>
 		</div>
 
 		<div *ngIf="itemFormsHeader.jenis_barang == 'MF'">
 
-		<h4>Metal finishing</h4>
+		<h4 style="display:inline">Metal Finishing</h4><span style="font-size:14px;color:gray;display:inline"> (Note: Centang jika fail / reject)</span>
 		<ion-row *ngFor="let item of itemForms2 ; let idx = index" >
 			<ion-col col-5>
 				<ion-item>
@@ -177,20 +180,28 @@
 			<ion-col col-4>
 				<ion-item>
 				    <ion-label color="primary" stacked></ion-label>		    
-      				<ion-input type="text" placeholder="Note" [(ngModel)]="itemForms2[idx].note" name="description" required="" ></ion-input>
+      				<ion-input type="text" placeholder="Note" [(ngModel)]="itemForms2[idx].note" name="description" required=""></ion-input>
 			    </ion-item>
+			</ion-col>
+			<ion-col col-1>
+				<ion-item style="padding-top:15px">
+					<ion-label color="primary" floating style="top:0px;left:0px">Fail</ion-label>		    
+					<ion-checkbox [(ngModel)]="itemForms2[idx].status_fail"  [ngModelOptions]="{standalone:true}"></ion-checkbox>
+				</ion-item>
 			</ion-col>
 		</ion-row>
 	</div>
 
 		<div *ngIf="itemFormsHeader.jenis_barang == 'WW'">
-		<h4>White Wood</h4>
+		<h4 style="display:inline">White Wood</h4><span style="font-size:14px;color:gray;display:inline"> (Note: Centang jika fail / reject)</span>
+
 		<ion-row *ngFor="let item of itemForms3 ; let idx = index">
 			<ion-col col-5>
 				<ion-item>
 			    	<p style="word-wrap:break-word;font-size:17px" class="p-primary">{{item.label}} :</p>
 			    </ion-item>
 			</ion-col>
+
 <!-- 			<ion-row radio-group [(ngModel)]="itemForms3[idx].option" [ngModelOptions]="{standalone:true}">
 				<ion-col col-auto>
 					<ion-item>
@@ -222,6 +233,12 @@
 				    <ion-label color="primary" stacked></ion-label>		    
       				<ion-input type="text" placeholder="Note" [(ngModel)]="itemForms3[idx].note" name="description" required="" ></ion-input>
 			    </ion-item>
+			</ion-col>
+			<ion-col col-1>
+				<ion-item style="padding-top:15px">
+					<ion-label color="primary" floating style="top:0px;left:0px">Fail</ion-label>		    
+					<ion-checkbox [(ngModel)]="itemForms3[idx].status_fail"  [ngModelOptions]="{standalone:true}"></ion-checkbox>
+				</ion-item>
 			</ion-col>
 		</ion-row>
 	</div>

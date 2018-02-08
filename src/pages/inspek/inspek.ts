@@ -39,6 +39,7 @@ export class InspekPage {
 		nama_barang : "",
 		jenis_barang : "",
 		qty_check : "",
+		new_qty_check : 0,
 		cat_ketidaksesuaian : "",
 	};
 
@@ -80,33 +81,33 @@ export class InspekPage {
   	}
 
   	this.itemForms = [  	
-					 	{rowid: "" , id_inspeksi : "" , id_pemeriksaan : "MM1" , category: "metal_mentahan" ,  label: "Ukuran Tidak Sesuai"  , option:"" , qty:"" , note:""},
-						{rowid: "" , id_inspeksi : "" , id_pemeriksaan : "MM2" , category: "metal_mentahan" ,  label: "Kesikuan Tidak Sesuai"  , option:"" , qty:"" , note:""},
-						{rowid: "" , id_inspeksi : "" , id_pemeriksaan : "MM3" , category: "metal_mentahan" ,  label: "Hasil Las Tidak Sesuai" , option:"" , qty:"" , note:""},
-						{rowid: "" , id_inspeksi : "" , id_pemeriksaan : "MM4" , category: "metal_mentahan" ,  label: "Hasil Gerinda Tidak Sesuai" , option:"" , qty:"" , note:""},
-						{rowid: "" , id_inspeksi : "" , id_pemeriksaan : "MM5" , category: "metal_mentahan" ,  label: "Drat Leveler Tdk Berfungsi" , option:"" , qty:"" , note:""},
+					 	{rowid: "" , id_inspeksi : "" , id_pemeriksaan : "MM1" , category: "metal_mentahan" ,  label: "Ukuran Tidak Sesuai"  , option:"" , qty:"" , note:"" , status_fail:false},
+						{rowid: "" , id_inspeksi : "" , id_pemeriksaan : "MM2" , category: "metal_mentahan" ,  label: "Kesikuan Tidak Sesuai"  , option:"" , qty:"" , note:"" , status_fail:false},
+						{rowid: "" , id_inspeksi : "" , id_pemeriksaan : "MM3" , category: "metal_mentahan" ,  label: "Hasil Las Tidak Sesuai" , option:"" , qty:"" , note:"" , status_fail:false},
+						{rowid: "" , id_inspeksi : "" , id_pemeriksaan : "MM4" , category: "metal_mentahan" ,  label: "Hasil Gerinda Tidak Sesuai" , option:"" , qty:"" , note:"" , status_fail:false},
+						{rowid: "" , id_inspeksi : "" , id_pemeriksaan : "MM5" , category: "metal_mentahan" ,  label: "Drat Leveler Tdk Berfungsi" , option:"" , qty:"" , note:"" , status_fail:false},
 					];
 
 
   	this.itemForms2 = [  	
-						{rowid: "" , id_inspeksi : "" , id_pemeriksaan : "MF1" ,category: "metal_finishing",  label: "Warna Tidak Sesuai" , option:"" , qty:"" , note:"" },
-						{rowid: "" , id_inspeksi : "" , id_pemeriksaan : "MF2" ,category: "metal_finishing",  label: "Gloss Tidak Sesuai" , option:"" , qty:"" , note:"" },
-						{rowid: "" , id_inspeksi : "" , id_pemeriksaan : "MF3" ,category: "metal_finishing",  label: "Buble" , option:"" , qty:"" , note:"" },
-						{rowid: "" , id_inspeksi : "" , id_pemeriksaan : "MF4" ,category: "metal_finishing",  label: "Saging" , option:"" , qty:"" , note:"" },
-						{rowid: "" , id_inspeksi : "" , id_pemeriksaan : "MF5" ,category: "metal_finishing",  label: "Scratch" , option:"" , qty:"" , note:"" },
-						{rowid: "" , id_inspeksi : "" , id_pemeriksaan : "MF6" ,category: "metal_finishing",  label: "Dented" , option:"" , qty:"" , note:"" },
-						{rowid: "" , id_inspeksi : "" , id_pemeriksaan : "MF7" ,category: "metal_finishing",  label: "Chipping" , option:"" , qty:"" , note:"" },
-						{rowid: "" , id_inspeksi : "" , id_pemeriksaan : "MF8" ,category: "metal_finishing",  label: "Dempul Tidak Bagus" , option:"" , qty:"" , note:"" }
+						{rowid: "" , id_inspeksi : "" , id_pemeriksaan : "MF1" ,category: "metal_finishing",  label: "Warna Tidak Sesuai" , option:"" , qty:"" , note:"" ,status_fail:false },
+						{rowid: "" , id_inspeksi : "" , id_pemeriksaan : "MF2" ,category: "metal_finishing",  label: "Gloss Tidak Sesuai" , option:"" , qty:"" , note:"" ,status_fail:false },
+						{rowid: "" , id_inspeksi : "" , id_pemeriksaan : "MF3" ,category: "metal_finishing",  label: "Buble" , option:"" , qty:"" , note:"" ,status_fail:false },
+						{rowid: "" , id_inspeksi : "" , id_pemeriksaan : "MF4" ,category: "metal_finishing",  label: "Saging" , option:"" , qty:"" , note:"" ,status_fail:false },
+						{rowid: "" , id_inspeksi : "" , id_pemeriksaan : "MF5" ,category: "metal_finishing",  label: "Scratch" , option:"" , qty:"" , note:"" ,status_fail:false },
+						{rowid: "" , id_inspeksi : "" , id_pemeriksaan : "MF6" ,category: "metal_finishing",  label: "Dented" , option:"" , qty:"" , note:"" ,status_fail:false },
+						{rowid: "" , id_inspeksi : "" , id_pemeriksaan : "MF7" ,category: "metal_finishing",  label: "Chipping" , option:"" , qty:"" , note:"" ,status_fail:false },
+						{rowid: "" , id_inspeksi : "" , id_pemeriksaan : "MF8" ,category: "metal_finishing",  label: "Dempul Tidak Bagus" , option:"" , qty:"" , note:"" ,status_fail:false }
 					];
 
   	this.itemForms3 = [  	
-						{rowid: "" , id_inspeksi : "" , id_pemeriksaan : "WW1" ,category: "white_wood" , label : "Permukaan Kasar" , option:"" , qty:"" , note:"" },
-						{rowid: "" , id_inspeksi : "" , id_pemeriksaan : "WW2" ,category: "white_wood" , label : "Ukuran Tidak Sesuai" , option:"" , qty:"" , note:"" },
-						{rowid: "" , id_inspeksi : "" , id_pemeriksaan : "WW3" ,category: "white_wood" , label : "Jumlah Chip Tidak Sesuai" , option:"" , qty:"" , note:"" },
-						{rowid: "" , id_inspeksi : "" , id_pemeriksaan : "WW4" ,category: "white_wood" , label : "Dempul Tidak bagus" , option:"" , qty:"" , note:"" },
-						{rowid: "" , id_inspeksi : "" , id_pemeriksaan : "WW5" ,category: "white_wood" , label : "Sudut tajam" , option:"" , qty:"" , note:"" },
-						{rowid: "" , id_inspeksi : "" , id_pemeriksaan : "WW6" ,category: "white_wood" , label : "Chipping" , option:"" , qty:"" , note:"" },
-						{rowid: "" , id_inspeksi : "" , id_pemeriksaan : "WW7" ,category: "white_wood" , label : "Kelurusan Tidak Sesuai" , option:"" , qty:"" , note:"" }
+						{rowid: "" , id_inspeksi : "" , id_pemeriksaan : "WW1" ,category: "white_wood" , label : "Permukaan Kasar" , option:"" , qty:"" , note:"" , status_fail:false },
+						{rowid: "" , id_inspeksi : "" , id_pemeriksaan : "WW2" ,category: "white_wood" , label : "Ukuran Tidak Sesuai" , option:"" , qty:"" , note:"" , status_fail:false },
+						{rowid: "" , id_inspeksi : "" , id_pemeriksaan : "WW3" ,category: "white_wood" , label : "Jumlah Chip Tidak Sesuai" , option:"" , qty:"" , note:"" , status_fail:false },
+						{rowid: "" , id_inspeksi : "" , id_pemeriksaan : "WW4" ,category: "white_wood" , label : "Dempul Tidak bagus" , option:"" , qty:"" , note:"" , status_fail:false },
+						{rowid: "" , id_inspeksi : "" , id_pemeriksaan : "WW5" ,category: "white_wood" , label : "Sudut tajam" , option:"" , qty:"" , note:"" , status_fail:false },
+						{rowid: "" , id_inspeksi : "" , id_pemeriksaan : "WW6" ,category: "white_wood" , label : "Chipping" , option:"" , qty:"" , note:"" , status_fail:false },
+						{rowid: "" , id_inspeksi : "" , id_pemeriksaan : "WW7" ,category: "white_wood" , label : "Kelurusan Tidak Sesuai" , option:"" , qty:"" , note:"" , status_fail:false }
 					];
 
   }
@@ -148,6 +149,7 @@ export class InspekPage {
 				var jenis_barang = this.itemFormsHeader.jenis_barang;
 	       		var new_format_tanggal_inspeksi = this.itemFormsHeader.tanggal_inspeksi.substring(0,10);
 
+	       		//MAPING DETAIL FORM TO ACTIVE FORM
 				if(jenis_barang == 'MM'){
 					var activeItemForm = this.itemForms;		
 				}else if(jenis_barang == 'MF'){
@@ -163,6 +165,7 @@ export class InspekPage {
 				this.today_date = this.date.getFullYear().toString()+'-'+(this.date.getMonth()+1).toString()+'-'+this.date.getDate().toString();	
 				//console.log(this.itemFormsHeader.id_perintah_inspek);
 				var id_perintah_inspek	= this.itemFormsHeader.id_perintah_inspek;
+				var trid_perintah_inspek= this.itemFormsHeader.trid_perintah_inspek;
 				var tanggal_inspeksi    = new_format_tanggal_inspeksi; 
 				var nama_inspektor      = this.itemFormsHeader.nama_inspektor; 
 				var nama_subkon         = this.itemFormsHeader.nama_subkon;
@@ -174,19 +177,29 @@ export class InspekPage {
 				var cat_ketidaksesuaian = this.itemFormsHeader.cat_ketidaksesuaian;
 				var date_created        = this.today_date;
 				var is_sync				= '';
-				var arrToInsert = [id_perintah_inspek,tanggal_inspeksi,nama_inspektor,nama_subkon ,lokasi_subkon,no_po ,id_material,nama_barang,jenis_barang,qty_check,qty_defect,cat_ketidaksesuaian,date_created,is_sync]; 
-				// console.log(arrToInsert);
-				//console.log('QTY DEFECT' + qty_defect);
+				//SUM ALL QTY STATUS FAIL
+				var total_qty_fail = 0;
+				for(var idx in activeItemForm){
+					if(activeItemForm[idx].status_fail == true){
+						total_qty_fail += parseInt(activeItemForm[idx].qty);
+					}
+				}		
+	
+				var arrToInsert = [id_perintah_inspek,trid_perintah_inspek,tanggal_inspeksi,nama_inspektor,nama_subkon ,lokasi_subkon,no_po ,id_material,nama_barang,jenis_barang,qty_check,total_qty_fail,qty_defect,cat_ketidaksesuaian,date_created,is_sync]; 
+			    console.log(arrToInsert);
 
-				db.executeSql('INSERT INTO m_inspek VALUES(NULL,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', arrToInsert)
+				//INSERT MASTER HEADER
+				db.executeSql('INSERT INTO m_inspek VALUES(NULL,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', arrToInsert)
 				.then(res => {
 					console.log('@Added Master Inspeksi: ' + JSON.stringify(res)); 
-
 					for(var idx in activeItemForm){
 						activeItemForm[idx].rowid = 'NULL';
-						activeItemForm[idx].id_inspeksi = res.insertId; 
-						//console.log(JSON.stringify(this.itemForms[idx]));
+						activeItemForm[idx].id_inspeksi = res.insertId; 						
+						//console.log(JSON.stringify(activeItemForm[idx]));
 					}
+					
+					//Update qty check - qty fail
+					this.itemFormsHeader.new_qty_check = parseInt(this.itemFormsHeader.qty_check) - total_qty_fail;
 
 					var sqlJson = {
 					    "data":{
@@ -201,7 +214,7 @@ export class InspekPage {
 						.then(() => {
 							console.log('@Added Item Pemeriksaan');
 							//UPDATE curr_qty_inspek
-							var sqlUpdate = "UPDATE t_perintah_inspek SET curr_qty_inspek=(SELECT curr_qty_inspek FROM t_perintah_inspek WHERE trid = '" + this.itemFormsHeader.trid_perintah_inspek + "')-'" + this.itemFormsHeader.qty_check + "' WHERE trid = '" + this.itemFormsHeader.trid_perintah_inspek + "';";						           
+							var sqlUpdate = "UPDATE t_perintah_inspek SET curr_qty_inspek=(SELECT curr_qty_inspek FROM t_perintah_inspek WHERE trid = '" + this.itemFormsHeader.trid_perintah_inspek + "')-'" + this.itemFormsHeader.new_qty_check + "' WHERE trid = '" + this.itemFormsHeader.trid_perintah_inspek + "';";						           
 							this.sqlitePorter.importSqlToDb(db, sqlUpdate)
 							.then(() => {
 							    console.log('Updated');
