@@ -14,6 +14,8 @@ import { ListPage } from '../pages/list/list';
 import { InspekPage } from '../pages/inspek/inspek';
 import { Inspek2Page } from '../pages/inspek2/inspek2';
 import { SyncronPage } from '../pages/syncron/syncron';
+import { UtilitiesPage } from '../pages/utilities/utilities';
+
 
 
 @Component({
@@ -36,7 +38,9 @@ export class MyApp {
       { title: 'List Inspect', component: ListPage },
       { title: 'Entry Inspect', component: InspekPage },
       { title: 'Entry Inspect V2', component: Inspek2Page },
-      { title: 'Syncron Inspect', component: SyncronPage }
+      { title: 'Syncron Inspect', component: SyncronPage },
+      { title: 'Utilities', component: UtilitiesPage }
+
     ];
 
   }

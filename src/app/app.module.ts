@@ -11,6 +11,8 @@ import { ListPage } from '../pages/list/list';
 import { InspekPage } from '../pages/inspek/inspek';
 import { Inspek2Page } from '../pages/inspek2/inspek2';
 import { SyncronPage } from '../pages/syncron/syncron';
+import { UtilitiesPage } from '../pages/utilities/utilities';
+
 
 import { SQLite , SQLiteObject} from '@ionic-native/sqlite';
 import { SQLitePorter } from '@ionic-native/sqlite-porter';
@@ -26,7 +28,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     ListPage,
     InspekPage,
     Inspek2Page,
-    SyncronPage
+    SyncronPage,
+    UtilitiesPage
   ],
   imports: [
     BrowserModule,
@@ -42,7 +45,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     ListPage,
     InspekPage,
     Inspek2Page,
-    SyncronPage
+    SyncronPage,
+    UtilitiesPage
   ],
   providers: [
     StatusBar,

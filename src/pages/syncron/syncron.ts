@@ -94,7 +94,7 @@ export class SyncronPage {
                         .then(res2 => {  
                             if(res2.rows.length > 0) { 
                                 for (var j = 0; j < res2.rows.length; j++) { 
-                                    var item1 = {rowid: "" , id_inspeksi : "" , id_pemeriksaan : "" , category: "" ,  label: ""  , option:"" , qty:"" , note:""};
+                                    var item1 = {rowid: "" , id_inspeksi : "" , id_pemeriksaan : "" , category: "" ,  label: ""  , option:"" , qty:"" , note:"",status_fail:""};
                                     item1.rowid          = res2.rows.item(j).rowid;
                                     item1.id_inspeksi    = res2.rows.item(j).id_inspeksi;
                                     item1.id_pemeriksaan = res2.rows.item(j).id_pemeriksaan;
@@ -192,6 +192,9 @@ export class SyncronPage {
             var arr_id_inspeksi = _.uniq(_.pluck(_.flatten(this.arrItemFormHeader), "id_inspeksi"));
             console.log(arr_id_inspeksi.join(","));
 
+            arr_id_perintah_inspek = _.filter(arr_id_perintah_inspek,function (value) {
+                return value!=='';
+            })
             // for(var idx = 0; idx < this.arrItemFormHeader.length; idx++){
             //     var target_id_inspeksi = this.arrItemFormHeader[idx].id_inspeksi;
             //     //console.log("Target Id To update");
