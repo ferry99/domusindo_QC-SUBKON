@@ -1,0 +1,204 @@
+<!--
+  Generated template for the InspekPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar color="primary">    
+    <ion-title>Pemeriksaan Sub Kon - {{itemFormsHeader.id_perintah_inspek}} - ({{itemFormsHeader.trid_perintah_inspek}})</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+	
+  	<form (ngSubmit)="saveDataInspek()">
+    <ion-grid>
+
+		<ion-row>
+			<ion-col col-6>
+				<ion-item>
+				    <ion-label color="primary" class="lg-label-text" stacked>Tanggal Inspek</ion-label>		    
+		  			<ion-datetime displayFormat="DD/MM/YYYY" name="date" [(ngModel)]="itemFormsHeader.tanggal_inspeksi" required="" block></ion-datetime>
+				</ion-item>			   
+			</ion-col>	
+			<ion-col col-6>
+				<ion-item>		
+				    <ion-label color="primary" class="lg-label-text" stacked>Nama Inspektor</ion-label>		    
+					<ion-input type="text" name="nama_inspektor" [(ngModel)]="itemFormsHeader.nama_inspektor" required="" ></ion-input>
+			    </ion-item>
+			</ion-col>		
+		</ion-row>
+		<ion-row>
+			<ion-col col-6>
+				<ion-item>
+				    <ion-label color="primary" class="lg-label-text" stacked>Nama Sub Kon</ion-label>		    
+					<ion-input type="text" name="nama_subkon" [(ngModel)]="itemFormsHeader.nama_subkon" required="" ></ion-input>
+			    </ion-item>
+			</ion-col>
+			<ion-col col-6>
+				<ion-item>
+				    <ion-label color="primary" class="lg-label-text" stacked>Lokasi Sub Kon</ion-label>		    
+					<ion-input type="text" name="lokasi_subkon" [(ngModel)]="itemFormsHeader.lokasi_subkon" required="" ></ion-input>
+			    </ion-item>
+			</ion-col>
+		</ion-row>	
+
+		<h4><ion-icon name="arrow-dropright"></ion-icon> Entry Produk</h4>
+		<ion-row>
+			<ion-col col-6>
+				<ion-item>
+				    <ion-label color="primary" class="lg-label-text" stacked>NO PO</ion-label>		    
+					<ion-input type="text" name="no_po" [(ngModel)]="itemFormsHeader.no_po" required="" ></ion-input>
+			    </ion-item>
+			</ion-col>
+			<ion-col col-6>
+				<ion-item>
+				    <ion-label color="primary" class="lg-label-text" stacked>ID Material</ion-label>		    
+					<ion-input type="text" name="id_material" [(ngModel)]="itemFormsHeader.id_material" required="" ></ion-input>
+			    </ion-item>
+			</ion-col>
+		</ion-row>	
+		<ion-row>
+			<ion-col col-6>
+				<ion-item>
+				    <ion-label color="primary" class="lg-label-text" stacked>Nama Barang</ion-label>		    
+					<ion-input type="text" name="nama_barang" [(ngModel)]="itemFormsHeader.nama_barang" required="" ></ion-input>
+			    </ion-item>
+			</ion-col>
+			<ion-col col-6>
+				<ion-item>
+				    <ion-label color="primary" class="lg-label-text" stacked>Jenis Barang</ion-label>		    
+					<ion-select name="dropDown" [(ngModel)]="itemFormsHeader.jenis_barang">
+						<ion-option value="MM">Metal Mentahan</ion-option>
+						<ion-option value="MF">Metal Finishing</ion-option>
+						<ion-option value="WW">White Wood</ion-option>
+					</ion-select>	
+			    </ion-item>
+			</ion-col>
+		</ion-row>
+		<ion-row>
+			<ion-col col-6>
+				<ion-item>
+				    <ion-label color="primary" class="lg-label-text" stacked>Qty Check</ion-label>		    
+      				<ion-input type="number" placeholder="QTY" name="qty_check" [(ngModel)]="itemFormsHeader.qty_check" required="" ></ion-input>
+			    </ion-item>
+			</ion-col>			
+		</ion-row>	
+
+		<h3><ion-icon name="arrow-dropright"></ion-icon> Item Ketidaksesuaian</h3>
+
+
+		<div *ngIf="itemFormsHeader.jenis_barang == 'MM'">
+			<h4 style="display:inline">Metal Mentahan</h4><span style="font-size:14px;color:gray;display:inline"> (Note: Centang jika fail / reject)</span>
+			<ion-row *ngFor="let item of activeItemForm ; let idx = index" >
+					<ion-col col-5>
+						<ion-item>
+					    	<p style="word-wrap:break-word;font-size:17px" class="p-primary md-label-text">{{item.label}} :</p>
+					    </ion-item>
+					</ion-col>	
+					<ion-col col-2>
+						<ion-item>
+						    <ion-label color="primary" stacked></ion-label>		    
+		      				<ion-input type="number" placeholder="QTY" [(ngModel)]="activeItemForm[idx].qty" name="amount" required="" ></ion-input>
+					    </ion-item>
+					</ion-col>
+					<ion-col col-4>
+						<ion-item>
+						    <ion-label color="primary" stacked></ion-label>		    
+		      				<ion-input type="text" placeholder="Note" [(ngModel)]="activeItemForm[idx].note" name="description" required="" ></ion-input>
+					    </ion-item>
+					</ion-col>
+					<ion-col col-1>
+						<ion-item style="padding-top:15px">
+							<ion-label color="primary" floating style="top:0px;left:0px">Fail</ion-label>		    
+							<ion-checkbox [(ngModel)]="activeItemForm[idx].status_fail"  [ngModelOptions]="{standalone:true}"></ion-checkbox>
+						</ion-item>
+					</ion-col>
+			</ion-row>
+		</div>
+
+		<div *ngIf="itemFormsHeader.jenis_barang == 'MF'">
+
+			<h4 style="display:inline">Metal Finishing</h4><span style="font-size:14px;color:gray;display:inline"> (Note: Centang jika fail / reject)</span>
+			<ion-row *ngFor="let item of activeItemForm ; let idx = index" >
+				<ion-col col-5>
+					<ion-item>
+				    	<p style="word-wrap:break-word;font-size:17px" class="p-primary">{{item.label}} :</p>
+				    </ion-item>
+				</ion-col>
+
+				<ion-col col-2>
+					<ion-item>
+					    <ion-label color="primary" stacked></ion-label>		    
+	      				<ion-input type="number" placeholder="QTY" [(ngModel)]="activeItemForm[idx].qty" name="amount" required="" ></ion-input>
+				    </ion-item>
+				</ion-col>
+				<ion-col col-4>
+					<ion-item>
+					    <ion-label color="primary" stacked></ion-label>		    
+	      				<ion-input type="text" placeholder="Note" [(ngModel)]="activeItemForm[idx].note" name="description" required=""></ion-input>
+				    </ion-item>
+				</ion-col>
+				<ion-col col-1>
+					<ion-item style="padding-top:15px">
+						<ion-label color="primary" floating style="top:0px;left:0px">Fail</ion-label>		    
+						<ion-checkbox [(ngModel)]="activeItemForm[idx].status_fail"  [ngModelOptions]="{standalone:true}"></ion-checkbox>
+					</ion-item>
+				</ion-col>
+			</ion-row>
+		</div>
+
+		<div *ngIf="itemFormsHeader.jenis_barang == 'WW'">
+			<h4 style="display:inline">White Wood</h4><span style="font-size:14px;color:gray;display:inline"> (Note: Centang jika fail / reject)</span>
+
+			<ion-row *ngFor="let item of activeItemForm ; let idx = index">
+				<ion-col col-5>
+					<ion-item>
+				    	<p style="word-wrap:break-word;font-size:17px" class="p-primary">{{item.label}} :</p>
+				    </ion-item>
+				</ion-col>	
+				<ion-col col-2>
+					<ion-item>
+					    <ion-label color="primary" stacked></ion-label>		    
+	      				<ion-input type="number" placeholder="QTY" [(ngModel)]="activeItemForm[idx].qty" name="amount" required="" ></ion-input>
+				    </ion-item>
+				</ion-col>
+				<ion-col col-4>
+					<ion-item>
+					    <ion-label color="primary" stacked></ion-label>		    
+	      				<ion-input type="text" placeholder="Note" [(ngModel)]="activeItemForm[idx].note" name="description" required="" ></ion-input>
+				    </ion-item>
+				</ion-col>
+				<ion-col col-1>
+					<ion-item style="padding-top:15px">
+						<ion-label color="primary" floating style="top:0px;left:0px">Fail</ion-label>		    
+						<ion-checkbox [(ngModel)]="activeItemForm[idx].status_fail"  [ngModelOptions]="{standalone:true}"></ion-checkbox>
+					</ion-item>
+				</ion-col>
+			</ion-row>
+		</div>
+
+
+
+
+    </ion-grid>
+    <button ion-button tappable large type="submit" [disabled]="itemFormsHeader.jenis_barang=='' || itemFormsHeader.qty_check == ''" *ngIf="isShow == true" block>Save Data</button>
+  </form>
+     
+
+<!--   <button ion-button type="submit" (click)= "postJSON()" >Test JSON</button>
+  <button ion-button type="submit" (click)= "getCurrentData()" >Test JSON2</button>
+  <button ion-button type="submit" (click)= "exportDb()" >Export</button>
+  <button ion-button type="submit" (click)= "saveToFile()" >File</button>
+  <button ion-button type="submit" (click)= "dropTable()" >Drop tb </button> -->
+
+<!--     <div>{{itemFormsHeader | json}}</div>
+ -->    <!-- <div>{{itemForms | json}}</div> -->
+    <!-- <div>{{itemForms2 | json}}</div>
+    <div>{{itemForms3 | json}}</div> -->
+
+</ion-content>
+
+

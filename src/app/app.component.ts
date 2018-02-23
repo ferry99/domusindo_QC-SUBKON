@@ -11,6 +11,7 @@ import { SQLitePorter } from '@ionic-native/sqlite-porter';
 import { HomePage } from '../pages/home/home';
 import { PKerjaPage } from '../pages/p-kerja/p-kerja';
 import { ListPage } from '../pages/list/list';
+import { EditInspekPage } from '../pages/edit-inspek/edit-inspek';
 import { InspekPage } from '../pages/inspek/inspek';
 import { Inspek2Page } from '../pages/inspek2/inspek2';
 import { SyncronPage } from '../pages/syncron/syncron';
@@ -36,7 +37,7 @@ export class MyApp {
       { title: 'Home', component: HomePage },
       { title: 'Perintah Inspek', component: PKerjaPage },
       { title: 'List Inspect', component: ListPage },
-      { title: 'Entry Inspect', component: InspekPage },
+      // { title: 'Entry Inspect', component: InspekPage },
       { title: 'Entry Inspect V2', component: Inspek2Page },
       { title: 'Syncron Inspect', component: SyncronPage },
       { title: 'Utilities', component: UtilitiesPage }
@@ -71,9 +72,11 @@ export class MyApp {
             lokasi_subkon VARCHAR(150),
             no_po VARCHAR(150),
             id_material VARCHAR(150),
+            po_item VARCHAR(150),
             nama_barang VARCHAR(150),
             jenis_barang VARCHAR(150),
-            qty_check VARCHAR(150),
+            qty_order VARCHAR(150),
+           qty_check VARCHAR(150),
             qty_fail VARCHAR(150),
             qty_defect VARCHAR(150),
             cat_ketidaksesuaian VARCHAR(150),
@@ -127,7 +130,9 @@ export class MyApp {
           po_item varchar(10) DEFAULT NULL,
           no_perintah varchar(50) DEFAULT NULL,
           tgl_inspek varchar(50) DEFAULT NULL,
-          curr_qty_inspek varchar(20) DEFAULT NULL)`;
+          curr_qty_inspek varchar(20) DEFAULT NULL,
+          limit_qty_inspek varchar(255) DEFAULT NULL,
+          is_deleted varchar(255) DEFAULT NULL)`;
             
  
         

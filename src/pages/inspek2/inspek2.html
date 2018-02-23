@@ -13,13 +13,17 @@
       <ion-item>   
       <h1>Choose item for inspect: </h1>     
       </ion-item>
-      <ion-item *ngFor="let item of items_inspeksi" (click)="openPage(item)">
+      <ion-item *ngFor="let item of items_inspeksi" (click)="openPage($event , item)" >
         <h2>{{item.deskripsi}}</h2>   
-        <h2>{{item.po}}</h2>
+        <h2>{{item.po}} - PK:{{item.no_perintah}}</h2>
         <h3>{{item.vendor}}</h3> 
         <h3>Qty Inspek = {{item.qty_inspek}}</h3>  
-        <h3>Sisa Qty Inspek = {{item.curr_qty_inspek}}</h3>  
+        <!-- <h3>Limit Qty inspek = {{item.limit_qty_inspek}}</h3>-->
+        <h3>Sisa Qty Inspek(Perintah Kerja)= {{item.curr_qty_inspek}}</h3>  
         <h5>{{item.trid}}</h5>   
+        <button ion-button clear item-end (click)="delete($event , item)" icon-only large>
+          <ion-icon name="trash"></ion-icon>
+        </button>
         <ion-note item-end>	          
         </ion-note>
       </ion-item>

@@ -83,9 +83,11 @@ export class SyncronPage {
                                         id_material : "",
                                         nama_barang : "",
                                         jenis_barang : "",
+                                        qty_order : "",
                                         qty_check : "",
                                         qty_defect : "",
                                         cat_ketidaksesuaian : "",
+                                        po_item : "",
                                         date_created:""};   
 
                         // STEP 2 -------- GET ITTERATE DETAIL_PEMERIKSAAN  
@@ -117,9 +119,11 @@ export class SyncronPage {
                             data1.nama_subkon          = res.rows.item(i).nama_subkon; 
                             data1.lokasi_subkon        = res.rows.item(i).lokasi_subkon;
                             data1.no_po                = res.rows.item(i).no_po;  
+                            data1.po_item              = res.rows.item(i).po_item;  
                             data1.id_material          = res.rows.item(i).id_material;
                             data1.nama_barang          = res.rows.item(i).nama_barang;
                             data1.jenis_barang         = res.rows.item(i).jenis_barang; 
+                            data1.qty_order            = res.rows.item(i).qty_order; 
                             data1.qty_check            = res.rows.item(i).qty_check; 
                             data1.qty_defect           = res.rows.item(i).qty_defect; 
                             data1.cat_ketidaksesuaian  = res.rows.item(i).cat_ketidaksesuaian; 

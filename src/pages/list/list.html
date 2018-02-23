@@ -26,10 +26,11 @@
 
 <!--   <ion-searchbar (ionInput)="getItems($event)" placeholder="Day/Month/Year"></ion-searchbar>
  -->  
+ <!-- (click)="editInspek(item.id_inspeksi)" -->
   <ion-list>
-    <button ion-item *ngFor="let item of items" (click)="itemTapped($event, item)">
+    <button ion-item *ngFor="let item of items" >
       <ion-icon [name]="item.icon" item-start></ion-icon>
-      <span class="md-label-text">{{item.nama_subkon}}</span>
+      <span class="md-label-text">{{item.id_inspeksi}}|{{item.nama_subkon}}|{{item.nama_barang}}</span>
       <p><span class="md-label-text">{{item.nama_inspektor}} | {{item.lokasi_subkon}} | {{item.tanggal_inspeksi}} | Qty Check: {{item.qty_check}} | Qty Fail: {{item.qty_fail}}</span></p>
       <div class="item-note" item-end>
         <p style="color:green">{{item.is_sync}}</p>

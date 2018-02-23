@@ -61,7 +61,8 @@ export class PKerjaPage {
             icon:  'share' ,
             handler: () => {
               console.log('Getting Perintah Kerja');
-              this.getPerintahInspek();
+              //this.getPerintahInspek();
+              this.checkNotSyncedAndGet();
             }
           },        
           
@@ -78,6 +79,25 @@ export class PKerjaPage {
       actionSheet.present();
   }
 
+  //REVISI CHECK IF HAVE ITEM HAVENT SYNC
+  checkNotSyncedAndGet(){
+    this.sqlite.create({
+      name: 'qc_checking_subkon.db',
+      location: 'default'
+    }).then((db: SQLiteObject) => {          
+      var sql2 = 'SELECT * FROM m_inspek WHERE is_sync=""';
+      db.executeSql(sql2, {})
+      .then(res => {
+        if(res.rows.length > 0){
+          alert('Syncron item sebelum download');
+        }else{
+          this.getPerintahInspek();
+        }
+      })
+      .catch(e => console.log(JSON.stringify(e)));
+    })
+  }
+
   //WORKFLOW GET NON LOCAL -> SAVE -> UPDATE -> GET LOCAL -> DISPLAY
   getPerintahInspek(){
   	this.loading = this.loadingCtrl.create({
@@ -88,7 +108,7 @@ export class PKerjaPage {
 
   	console.log('@Starting getting json');
 
-  	this.http.post('http://192.168.0.8/domuscom/f_lib_domuscom/dept/qa/qc_checking_subkon/controller/c.api_get_perintah_inspek2.php','')
+  	this.http.post('http://192.168.0.8/domuscom/f_lib_domuscom/dept/qa/qc_checking_subkon/controller/c.api_get_perintah_inspek.php','')
   	.subscribe(data => {
   	    this.data.response = data["_body"]; 
   	    var rs = JSON.parse(this.data.response);
@@ -224,9 +244,11 @@ export class PKerjaPage {
 	      <ion-item *ngFor="let item of items_inspeksi">
 	        <h2>{{item.deskripsi}}</h2>   
 	        <h2>{{item.po}}</h2>
-	        <h3>{{item.vendor}}</h3>   
+	        <h3>{{item.vendor}}</h3>            
+          <h3>Qty Order = {{item.qty_ord}}</h3>  
           <h3>Qty Inspek = {{item.qty_inspek}}</h3>  
           <h3>Sisa Qty Inspek = {{item.curr_qty_inspek}}</h3> 
+          <h3>Limit Qty Inspek = {{item.limit_qty_inspek}}</h3> 
 	        <ion-note item-end>	     
             <p style="color:green">{{item.curr_qty_inspek == "0" ? "Finish" : "Havent Finish"}}</p>        
 	        </ion-note>

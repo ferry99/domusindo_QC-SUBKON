@@ -10,6 +10,8 @@ import 'rxjs/add/operator/map';
 
 import { InspekPage } from '../inspek/inspek';
 import { HomePage } from '../home/home';
+import _ from 'underscore';
+
 
 /**
  * Generated class for the Inspek2Page page.
@@ -74,8 +76,8 @@ export class Inspek2Page {
   	name: 'qc_checking_subkon.db',
   	location: 'default'
   	}).then((db: SQLiteObject) => {
-  		var sql = 'SELECT * FROM t_perintah_inspek WHERE curr_qty_inspek > ?';	      		
-  		db.executeSql(sql ,['0'])
+  		var sql = 'SELECT * FROM t_perintah_inspek WHERE curr_qty_inspek > ? AND is_deleted = ?';	      		
+  		db.executeSql(sql ,['0' , ''])
   		.then(res => {
   			console.log('@Executed Select t_perintah_inspek on inspek_page2');
   			if (res.rows.length > 0) {
@@ -95,9 +97,50 @@ export class Inspek2Page {
     console.log('ionViewDidLoad Inspek2Page');
   }
 
-  openPage(item){
+  openPage(event , item){
+    event.stopPropagation();
   	this.navCtrl.push(InspekPage, {
-		firstPassed: item
+		  firstPassed: item
+    })
+  }
+
+  delete(event , item){
+    event.stopPropagation();
+    let confirm = this.alertCtrl.create({
+    title: 'CONFIRMATION !! ',
+    message: 'DELETE THIS ITEM?',
+    buttons: [
+      {
+         text: 'No',
+         handler: () => {
+         }
+      },
+      {
+         text: 'Yes',
+         handler: () => {
+           this.deleteItem(item);
+         }
+      }
+    ]
+    });
+    confirm.present();
+  }
+
+  deleteItem(item){
+    this.sqlite.create({
+      name: 'qc_checking_subkon.db',
+      location: 'default'
+    }).then((db: SQLiteObject) => {          
+        var sqlUpdate = "UPDATE t_perintah_inspek SET is_deleted = 'true' WHERE trid= '" + item.trid + "'";
+        this.sqlitePorter.importSqlToDb(db, sqlUpdate)
+        .then(() => {
+            //arr = _.reject(arr, function(objArr){ return objArr.id == 3; });
+            this.items_inspeksi = _.reject(this.items_inspeksi, function(items_inspeksi:any){ return items_inspeksi.trid == item.trid; });
+            console.log('Deleted');       
+        })
+        .catch(e =>{
+          console.error(JSON.stringify(e))
+        });
     })
   }
 

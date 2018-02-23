@@ -6,6 +6,9 @@ import { SQLitePorter } from '@ionic-native/sqlite-porter';
 import { AlertController } from 'ionic-angular';
 import { LoadingController } from 'ionic-angular';
 
+import { EditInspekPage } from '../edit-inspek/edit-inspek';
+
+
 @Component({
   selector: 'page-list',
   templateUrl: 'list.html'
@@ -124,5 +127,11 @@ export class ListPage {
         this.navCtrl.push(ListPage, {
            item: item
         });
+    }
+
+    editInspek(id_inspeksi) {
+      this.navCtrl.push(EditInspekPage, {
+        id_inspeksi:id_inspeksi
+      });
     }
 }

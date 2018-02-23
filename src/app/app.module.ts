@@ -8,6 +8,8 @@ import { HomePage } from '../pages/home/home';
 import { PKerjaPage } from '../pages/p-kerja/p-kerja';
 import { ModalContentPage } from '../pages/p-kerja/p-kerja';
 import { ListPage } from '../pages/list/list';
+import { EditInspekPage } from '../pages/edit-inspek/edit-inspek';
+
 import { InspekPage } from '../pages/inspek/inspek';
 import { Inspek2Page } from '../pages/inspek2/inspek2';
 import { SyncronPage } from '../pages/syncron/syncron';
@@ -26,6 +28,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     PKerjaPage,
     ModalContentPage,
     ListPage,
+    EditInspekPage,
     InspekPage,
     Inspek2Page,
     SyncronPage,
@@ -43,6 +46,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     PKerjaPage,
     ModalContentPage,
     ListPage,
+    EditInspekPage,
     InspekPage,
     Inspek2Page,
     SyncronPage,

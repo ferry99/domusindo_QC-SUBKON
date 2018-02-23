@@ -35,9 +35,11 @@ export class InspekPage {
 		nama_subkon : "",
 		lokasi_subkon : "",
 		no_po : "",
+		po_item :"",
 		id_material : "",
 		nama_barang : "",
 		jenis_barang : "",
+		qty_order : "",
 		qty_check : "",
 		new_qty_check : 0,
 		cat_ketidaksesuaian : "",
@@ -66,14 +68,17 @@ export class InspekPage {
 
   	//console.log(navParams.get("firstPassed"));
   	if(navParams.get("firstPassed") != null){//IF ENTRY FROM PERINTAH INSPEK
-  		this.is_from_perintah = true;
-  		this.item_inspek = navParams.get("firstPassed");
-  		this.itemFormsHeader.trid_perintah_inspek = this.item_inspek.trid;
-  		this.itemFormsHeader.id_perintah_inspek = this.item_inspek.no_perintah;
-		this.itemFormsHeader.nama_subkon = this.item_inspek.vendor;
-		this.itemFormsHeader.no_po = this.item_inspek.po;
-		this.itemFormsHeader.nama_barang = this.item_inspek.deskripsi;
-		this.itemFormsHeader.id_material = this.item_inspek.idmat;
+		this.is_from_perintah                     = true;
+		this.item_inspek                          = navParams.get("firstPassed");
+		//console.log(this.item_inspek.no_po);
+		this.itemFormsHeader.trid_perintah_inspek = this.item_inspek.trid;
+		this.itemFormsHeader.id_perintah_inspek   = this.item_inspek.no_perintah;
+		this.itemFormsHeader.nama_subkon          = this.item_inspek.vendor;
+		this.itemFormsHeader.no_po                = this.item_inspek.po;
+		this.itemFormsHeader.po_item              = this.item_inspek.po_item;//INSERT PO ITEM
+		this.itemFormsHeader.nama_barang          = this.item_inspek.deskripsi;
+		this.itemFormsHeader.id_material          = this.item_inspek.idmat;
+		this.itemFormsHeader.qty_order            = this.item_inspek.qty_ord;
   		console.log(JSON.stringify(navParams.get("firstPassed")));
   	}else if(navParams.get("firstPassed") == null){
   		console.log('No data passed');
@@ -132,7 +137,7 @@ export class InspekPage {
 		}
 
 		//IF QTY CHECK MORE THAN CURR QTY INSPEK
-		if(parseInt(this.itemFormsHeader.qty_check) > parseInt(this.item_inspek.curr_qty_inspek)){
+		if(parseInt(this.itemFormsHeader.qty_check) > parseInt(this.item_inspek.limit_qty_inspek)){
 			this.statusInsert = false;
 		}else{
 			this.statusInsert = true;
@@ -172,7 +177,9 @@ export class InspekPage {
 				var lokasi_subkon       = this.itemFormsHeader.lokasi_subkon;
 				var no_po               = this.itemFormsHeader.no_po; 
 				var id_material         = this.itemFormsHeader.id_material;
+				var po_item             = this.itemFormsHeader.po_item;
 				var nama_barang         = this.itemFormsHeader.nama_barang;
+				var qty_order           = this.itemFormsHeader.qty_order;
 				var qty_check           = this.itemFormsHeader.qty_check;
 				var cat_ketidaksesuaian = this.itemFormsHeader.cat_ketidaksesuaian;
 				var date_created        = this.today_date;
@@ -185,11 +192,11 @@ export class InspekPage {
 					}
 				}		
 	
-				var arrToInsert = [id_perintah_inspek,trid_perintah_inspek,tanggal_inspeksi,nama_inspektor,nama_subkon ,lokasi_subkon,no_po ,id_material,nama_barang,jenis_barang,qty_check,total_qty_fail,qty_defect,cat_ketidaksesuaian,date_created,is_sync]; 
+				var arrToInsert = [id_perintah_inspek,trid_perintah_inspek,tanggal_inspeksi,nama_inspektor,nama_subkon ,lokasi_subkon,no_po ,id_material,po_item,nama_barang,jenis_barang,qty_order,qty_check,total_qty_fail,qty_defect,cat_ketidaksesuaian,date_created,is_sync]; 
 			    console.log(arrToInsert);
 
 				//INSERT MASTER HEADER
-				db.executeSql('INSERT INTO m_inspek VALUES(NULL,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', arrToInsert)
+				db.executeSql('INSERT INTO m_inspek VALUES(NULL,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', arrToInsert)
 				.then(res => {
 					console.log('@Added Master Inspeksi: ' + JSON.stringify(res)); 
 					for(var idx in activeItemForm){
@@ -200,6 +207,7 @@ export class InspekPage {
 					
 					//Update qty check - qty fail
 					this.itemFormsHeader.new_qty_check = parseInt(this.itemFormsHeader.qty_check) - total_qty_fail;
+
 
 					var sqlJson = {
 					    "data":{
@@ -213,8 +221,13 @@ export class InspekPage {
 					this.sqlitePorter.importJsonToDb(db, sqlJson)
 						.then(() => {
 							console.log('@Added Item Pemeriksaan');
-							//UPDATE curr_qty_inspek
-							var sqlUpdate = "UPDATE t_perintah_inspek SET curr_qty_inspek=(SELECT curr_qty_inspek FROM t_perintah_inspek WHERE trid = '" + this.itemFormsHeader.trid_perintah_inspek + "')-'" + this.itemFormsHeader.new_qty_check + "' WHERE trid = '" + this.itemFormsHeader.trid_perintah_inspek + "';";						           
+							//UPDATE curr_qty_inspek MINUS IT
+							var no_po   = this.itemFormsHeader.no_po;
+							var idmat   = this.itemFormsHeader.id_material;
+							var po_item = this.itemFormsHeader.po_item;
+							var sqlUpdate = "UPDATE t_perintah_inspek SET curr_qty_inspek=(SELECT curr_qty_inspek FROM t_perintah_inspek WHERE trid = '" + this.itemFormsHeader.trid_perintah_inspek + "')-'" + this.itemFormsHeader.new_qty_check + "' WHERE trid = '" + this.itemFormsHeader.trid_perintah_inspek + "';"+
+							                "UPDATE t_perintah_inspek SET limit_qty_inspek=(SELECT limit_qty_inspek FROM t_perintah_inspek WHERE trid = '" + this.itemFormsHeader.trid_perintah_inspek + "')-'" + this.itemFormsHeader.new_qty_check + "' WHERE po = '" + no_po + "' AND po_item = '" + po_item + "' AND trid != '" + this.itemFormsHeader.trid_perintah_inspek + "';"+					           					           
+							                "UPDATE t_perintah_inspek SET limit_qty_inspek=(SELECT limit_qty_inspek FROM t_perintah_inspek WHERE trid = '" + this.itemFormsHeader.trid_perintah_inspek + "')-'" + this.itemFormsHeader.new_qty_check + "' WHERE trid = '" + this.itemFormsHeader.trid_perintah_inspek + "';";
 							this.sqlitePorter.importSqlToDb(db, sqlUpdate)
 							.then(() => {
 							    console.log('Updated');
