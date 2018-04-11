@@ -13,7 +13,7 @@
 
 <ion-content padding>
 	
-  	<form (ngSubmit)="saveDataInspek()">
+  	<form (ngSubmit)="editDataInspek()">
     <ion-grid>
 
 		<ion-row>
@@ -70,7 +70,7 @@
 			<ion-col col-6>
 				<ion-item>
 				    <ion-label color="primary" class="lg-label-text" stacked>Jenis Barang</ion-label>		    
-					<ion-select name="dropDown" [(ngModel)]="itemFormsHeader.jenis_barang">
+					<ion-select name="dropDown" [(ngModel)]="itemFormsHeader.jenis_barang" #C (ionChange)="onChange(C.value)" disabled>
 						<ion-option value="MM">Metal Mentahan</ion-option>
 						<ion-option value="MF">Metal Finishing</ion-option>
 						<ion-option value="WW">White Wood</ion-option>
@@ -82,7 +82,7 @@
 			<ion-col col-6>
 				<ion-item>
 				    <ion-label color="primary" class="lg-label-text" stacked>Qty Check</ion-label>		    
-      				<ion-input type="number" placeholder="QTY" name="qty_check" [(ngModel)]="itemFormsHeader.qty_check" required="" ></ion-input>
+      				<ion-input type="number" placeholder="QTY" name="qty_check" [(ngModel)]="itemFormsHeader.new_qty_check" required="" ></ion-input>
 			    </ion-item>
 			</ion-col>			
 		</ion-row>	
@@ -101,13 +101,13 @@
 					<ion-col col-2>
 						<ion-item>
 						    <ion-label color="primary" stacked></ion-label>		    
-		      				<ion-input type="number" placeholder="QTY" [(ngModel)]="activeItemForm[idx].qty" name="amount" required="" ></ion-input>
+		      				<ion-input type="number" placeholder="QTY" [(ngModel)]="activeItemForm[idx].qty" name="amount" required="" [ngModelOptions]="{standalone:true}"></ion-input>
 					    </ion-item>
 					</ion-col>
 					<ion-col col-4>
 						<ion-item>
 						    <ion-label color="primary" stacked></ion-label>		    
-		      				<ion-input type="text" placeholder="Note" [(ngModel)]="activeItemForm[idx].note" name="description" required="" ></ion-input>
+		      				<ion-input type="text" placeholder="Note" [(ngModel)]="activeItemForm[idx].note" name="description" required="" [ngModelOptions]="{standalone:true}"></ion-input>
 					    </ion-item>
 					</ion-col>
 					<ion-col col-1>
@@ -132,13 +132,13 @@
 				<ion-col col-2>
 					<ion-item>
 					    <ion-label color="primary" stacked></ion-label>		    
-	      				<ion-input type="number" placeholder="QTY" [(ngModel)]="activeItemForm[idx].qty" name="amount" required="" ></ion-input>
+	      				<ion-input type="number" placeholder="QTY" [(ngModel)]="activeItemForm[idx].qty" name="amount" required="" [ngModelOptions]="{standalone:true}"></ion-input>
 				    </ion-item>
 				</ion-col>
 				<ion-col col-4>
 					<ion-item>
 					    <ion-label color="primary" stacked></ion-label>		    
-	      				<ion-input type="text" placeholder="Note" [(ngModel)]="activeItemForm[idx].note" name="description" required=""></ion-input>
+	      				<ion-input type="text" placeholder="Note" [(ngModel)]="activeItemForm[idx].note" name="description" required="" [ngModelOptions]="{standalone:true}"></ion-input>
 				    </ion-item>
 				</ion-col>
 				<ion-col col-1>
@@ -156,19 +156,19 @@
 			<ion-row *ngFor="let item of activeItemForm ; let idx = index">
 				<ion-col col-5>
 					<ion-item>
-				    	<p style="word-wrap:break-word;font-size:17px" class="p-primary">{{item.label}} :</p>
+				    	<p style="word-wrap:break-word;font-size:17px" class="p-primary">{{item.label}} : </p>
 				    </ion-item>
 				</ion-col>	
 				<ion-col col-2>
 					<ion-item>
 					    <ion-label color="primary" stacked></ion-label>		    
-	      				<ion-input type="number" placeholder="QTY" [(ngModel)]="activeItemForm[idx].qty" name="amount" required="" ></ion-input>
+	      				<ion-input type="number" [(ngModel)]="activeItemForm[idx].qty" name="amount" required="" [ngModelOptions]="{standalone:true}"></ion-input>
 				    </ion-item>
 				</ion-col>
 				<ion-col col-4>
 					<ion-item>
 					    <ion-label color="primary" stacked></ion-label>		    
-	      				<ion-input type="text" placeholder="Note" [(ngModel)]="activeItemForm[idx].note" name="description" required="" ></ion-input>
+	      				<ion-input type="text" [(ngModel)]="activeItemForm[idx].note" name="description" required="" [ngModelOptions]="{standalone:true}"></ion-input>
 				    </ion-item>
 				</ion-col>
 				<ion-col col-1>
@@ -180,11 +180,8 @@
 			</ion-row>
 		</div>
 
-
-
-
     </ion-grid>
-    <button ion-button tappable large type="submit" [disabled]="itemFormsHeader.jenis_barang=='' || itemFormsHeader.qty_check == ''" *ngIf="isShow == true" block>Save Data</button>
+    <button ion-button tappable large type="submit" [disabled]="itemFormsHeader.jenis_barang=='' || itemFormsHeader.qty_check == ''" *ngIf="isShow == true" block>Edit Data</button>
   </form>
      
 
@@ -194,7 +191,7 @@
   <button ion-button type="submit" (click)= "saveToFile()" >File</button>
   <button ion-button type="submit" (click)= "dropTable()" >Drop tb </button> -->
 
-<!--     <div>{{itemFormsHeader | json}}</div>
+<!--     <div>{{activeItemForm | json}}</div>
  -->    <!-- <div>{{itemForms | json}}</div> -->
     <!-- <div>{{itemForms2 | json}}</div>
     <div>{{itemForms3 | json}}</div> -->

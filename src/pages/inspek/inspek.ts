@@ -184,6 +184,8 @@ export class InspekPage {
 				var cat_ketidaksesuaian = this.itemFormsHeader.cat_ketidaksesuaian;
 				var date_created        = this.today_date;
 				var is_sync				= '';
+				var modified_on			= '';
+
 				//SUM ALL QTY STATUS FAIL
 				var total_qty_fail = 0;
 				for(var idx in activeItemForm){
@@ -196,7 +198,7 @@ export class InspekPage {
 			    console.log(arrToInsert);
 
 				//INSERT MASTER HEADER
-				db.executeSql('INSERT INTO m_inspek VALUES(NULL,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', arrToInsert)
+				db.executeSql('INSERT INTO m_inspek VALUES(NULL,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', arrToInsert)
 				.then(res => {
 					console.log('@Added Master Inspeksi: ' + JSON.stringify(res)); 
 					for(var idx in activeItemForm){

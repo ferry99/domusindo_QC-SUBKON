@@ -36,7 +36,8 @@ export class HomePage {
 					qty_defect VARCHAR(150),
 					cat_ketidaksesuaian VARCHAR(150),
 					date_created datetime,
-					is_sync VARCHAR(150))`;
+					is_sync VARCHAR(150),
+					modified_on datetime)`;
 			
 			db.executeSql(sql, {})
 			.then(res => console.log('@Executed Init SQL : m_inspek table')

@@ -36,7 +36,7 @@ export class MyApp {
     this.pages = [
       { title: 'Home', component: HomePage },
       { title: 'Perintah Inspek', component: PKerjaPage },
-      { title: 'List Inspect', component: ListPage },
+      { title: 'List Inspect/ Edit', component: ListPage },
       // { title: 'Entry Inspect', component: InspekPage },
       { title: 'Entry Inspect V2', component: Inspek2Page },
       { title: 'Syncron Inspect', component: SyncronPage },
@@ -81,7 +81,8 @@ export class MyApp {
             qty_defect VARCHAR(150),
             cat_ketidaksesuaian VARCHAR(150),
             date_created datetime,
-            is_sync VARCHAR(150))`;
+            is_sync VARCHAR(150),
+            modified_on datetime)`;
         
         db.executeSql(sql, {})
         .then(res => console.log('@Executed Init SQL : m_inspek table')

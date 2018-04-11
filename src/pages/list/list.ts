@@ -18,6 +18,7 @@ export class ListPage {
   icons: string[];
   items = [];
   tanggal_inspeksi: String = new Date().toISOString();
+  //tanggal_inspeksi = '2018-04-07';
   loading:any;
 
     constructor(    
@@ -122,16 +123,20 @@ export class ListPage {
       // }
     }
 
-    itemTapped(event, item) {
+    itemTapped(event, item){
      // That's right, we're pushing to ourselves!
         this.navCtrl.push(ListPage, {
            item: item
         });
     }
 
-    editInspek(id_inspeksi) {
-      this.navCtrl.push(EditInspekPage, {
-        id_inspeksi:id_inspeksi
-      });
+    editInspek(id_inspeksi , is_sync){
+      if(is_sync == 'synced'){
+        alert('Tidak Bisa Mengedit Karena sudah Di SYNCRON');
+      }else{
+        this.navCtrl.push(EditInspekPage, {
+          id_inspeksi:id_inspeksi
+        });
+      }      
     }
 }
