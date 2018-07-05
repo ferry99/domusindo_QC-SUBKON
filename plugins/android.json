@@ -1,0 +1,42 @@
+{
+    "prepare_queue": {
+        "installed": [],
+        "uninstalled": []
+    },
+    "config_munge": {
+        "files": {}
+    },
+    "installed_plugins": {
+        "cordova-plugin-actionsheet": {
+            "PACKAGE_NAME": "com.domus.starter"
+        },
+        "cordova-plugin-device": {
+            "PACKAGE_NAME": "com.domus.starter"
+        },
+        "cordova-plugin-ionic-webview": {
+            "PACKAGE_NAME": "com.domus.starter"
+        },
+        "cordova-plugin-splashscreen": {
+            "PACKAGE_NAME": "com.domus.starter"
+        },
+        "cordova-plugin-statusbar": {
+            "PACKAGE_NAME": "com.domus.starter"
+        },
+        "cordova-plugin-whitelist": {
+            "PACKAGE_NAME": "com.domus.starter"
+        },
+        "cordova-plugin-x-toast": {
+            "PACKAGE_NAME": "com.domus.starter"
+        },
+        "cordova-sqlite-storage": {
+            "PACKAGE_NAME": "com.domus.starter"
+        },
+        "ionic-plugin-keyboard": {
+            "PACKAGE_NAME": "com.domus.starter"
+        },
+        "uk.co.workingedge.cordova.plugin.sqliteporter": {
+            "PACKAGE_NAME": "com.domus.starter"
+        }
+    },
+    "dependent_plugins": {}
+}

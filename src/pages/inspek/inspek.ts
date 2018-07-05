@@ -16,6 +16,11 @@ import { Inspek2Page } from '../inspek2/inspek2';
  * Ionic pages and navigation.
  */
 
+ /** VARIABLE NOTE
+ * limit_qty_inspek = global inspek dengan item yang sudah di syncron
+ * curr_Qty_inspek  = jumlah inspek yang hanya bergantung di tablet 
+ */
+
 
 @Component({
   selector: 'page-inspek',
@@ -226,7 +231,7 @@ export class InspekPage {
 							//UPDATE curr_qty_inspek MINUS IT
 							var no_po   = this.itemFormsHeader.no_po;
 							var idmat   = this.itemFormsHeader.id_material;
-							var po_item = this.itemFormsHeader.po_item;
+							var po_item = this.itemFormsHeader.po_item;							
 							var sqlUpdate = "UPDATE t_perintah_inspek SET curr_qty_inspek=(SELECT curr_qty_inspek FROM t_perintah_inspek WHERE trid = '" + this.itemFormsHeader.trid_perintah_inspek + "')-'" + this.itemFormsHeader.new_qty_check + "' WHERE trid = '" + this.itemFormsHeader.trid_perintah_inspek + "';"+
 							                "UPDATE t_perintah_inspek SET limit_qty_inspek=(SELECT limit_qty_inspek FROM t_perintah_inspek WHERE trid = '" + this.itemFormsHeader.trid_perintah_inspek + "')-'" + this.itemFormsHeader.new_qty_check + "' WHERE po = '" + no_po + "' AND po_item = '" + po_item + "' AND trid != '" + this.itemFormsHeader.trid_perintah_inspek + "';"+					           					           
 							                "UPDATE t_perintah_inspek SET limit_qty_inspek=(SELECT limit_qty_inspek FROM t_perintah_inspek WHERE trid = '" + this.itemFormsHeader.trid_perintah_inspek + "')-'" + this.itemFormsHeader.new_qty_check + "' WHERE trid = '" + this.itemFormsHeader.trid_perintah_inspek + "';";
