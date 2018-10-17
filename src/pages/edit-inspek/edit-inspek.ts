@@ -78,6 +78,12 @@ export class EditInspekPage {
               {rowid: "" , id_inspeksi : "" , id_pemeriksaan : "WW7" ,category: "white_wood" , label : "Kelurusan Tidak Sesuai" , option:"" , qty:"" , note:"" , status_fail:false }
             ];
 
+  itemForms4 = [    
+         {rowid: "" , id_inspeksi : "" , id_pemeriksaan : "RS1" ,category: "resin" , label : "Dimensi Sesuai" , option:"" , qty:"" , note:"" , status_fail:false },
+         {rowid: "" , id_inspeksi : "" , id_pemeriksaan : "RS2" ,category: "resin" , label : "Lubang Jarum" , option:"" , qty:"" , note:"" , status_fail:false },
+         {rowid: "" , id_inspeksi : "" , id_pemeriksaan : "RS3" ,category: "resin" , label : "Chipping" , option:"" , qty:"" , note:"" , status_fail:false },
+         {rowid: "" , id_inspeksi : "" , id_pemeriksaan : "RS4" ,category: "resin" , label : "Cacat" , option:"" , qty:"" , note:"" , status_fail:false }
+       ];
  
   activeItemForm:any = [];
   isShow = true;
@@ -173,6 +179,10 @@ export class EditInspekPage {
 
       }else if(val == 'WW'){
         this.activeItemForm = this.itemForms3;
+                //this.itemFormsHeader.jenis_barang = 'WW';
+
+      }else if(val == 'RS'){
+        this.activeItemForm = this.itemForms4;
                 //this.itemFormsHeader.jenis_barang = 'WW';
 
       }

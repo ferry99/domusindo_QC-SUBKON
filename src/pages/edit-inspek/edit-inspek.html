@@ -74,6 +74,7 @@
 						<ion-option value="MM">Metal Mentahan</ion-option>
 						<ion-option value="MF">Metal Finishing</ion-option>
 						<ion-option value="WW">White Wood</ion-option>
+						<ion-option value="RS">Resin</ion-option>
 					</ion-select>	
 			    </ion-item>
 			</ion-col>
@@ -179,6 +180,36 @@
 				</ion-col>
 			</ion-row>
 		</div>
+
+			<div *ngIf="itemFormsHeader.jenis_barang == 'RS'">
+				<h4 style="display:inline">White Wood</h4><span style="font-size:14px;color:gray;display:inline"> (Note: Centang jika fail / reject)</span>
+
+				<ion-row *ngFor="let item of activeItemForm ; let idx = index">
+					<ion-col col-5>
+						<ion-item>
+					    	<p style="word-wrap:break-word;font-size:17px" class="p-primary">{{item.label}} : </p>
+					    </ion-item>
+					</ion-col>	
+					<ion-col col-2>
+						<ion-item>
+						    <ion-label color="primary" stacked></ion-label>		    
+		      				<ion-input type="number" [(ngModel)]="activeItemForm[idx].qty" name="amount" required="" [ngModelOptions]="{standalone:true}"></ion-input>
+					    </ion-item>
+					</ion-col>
+					<ion-col col-4>
+						<ion-item>
+						    <ion-label color="primary" stacked></ion-label>		    
+		      				<ion-input type="text" [(ngModel)]="activeItemForm[idx].note" name="description" required="" [ngModelOptions]="{standalone:true}"></ion-input>
+					    </ion-item>
+					</ion-col>
+					<ion-col col-1>
+						<ion-item style="padding-top:15px">
+							<ion-label color="primary" floating style="top:0px;left:0px">Fail</ion-label>		    
+							<ion-checkbox [(ngModel)]="activeItemForm[idx].status_fail"  [ngModelOptions]="{standalone:true}"></ion-checkbox>
+						</ion-item>
+					</ion-col>
+				</ion-row>
+			</div>
 
     </ion-grid>
     <button ion-button tappable large type="submit" [disabled]="itemFormsHeader.jenis_barang=='' || itemFormsHeader.qty_check == ''" *ngIf="isShow == true" block>Edit Data</button>
