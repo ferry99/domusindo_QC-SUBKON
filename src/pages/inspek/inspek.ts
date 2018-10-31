@@ -262,8 +262,6 @@ export class InspekPage {
 							});
 						})
 						.catch(e => console.error(JSON.stringify(e)));
-
-
 					// alert('success:' + JSON.stringify(res));
 				})
 				.catch(e => {

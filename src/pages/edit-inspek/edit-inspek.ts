@@ -179,12 +179,11 @@ export class EditInspekPage {
 
       }else if(val == 'WW'){
         this.activeItemForm = this.itemForms3;
-                //this.itemFormsHeader.jenis_barang = 'WW';
+        //this.itemFormsHeader.jenis_barang = 'WW';
 
       }else if(val == 'RS'){
         this.activeItemForm = this.itemForms4;
-                //this.itemFormsHeader.jenis_barang = 'WW';
-
+        //this.itemFormsHeader.jenis_barang = 'WW';
       }
     }
   }
